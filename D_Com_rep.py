@@ -6,10 +6,6 @@ from termcolor import colored
 import time
 from colorama import Fore, Back, Style, init
 
-# Initialize colorama for colored text
-init(autoreset=True)
-
-on=3
 universe_logs = [
     {
         "universe_number": '4378 C',
@@ -26,11 +22,11 @@ universe_logs = [
             },
             {
                 "timestamp": "09:14 AM",
-                "message": "Detected presence of 'James Mirakilin' (Version 4378-C).",
+                "message": "Detected presence of 'REDACTED' (Version 4378-C).",
             },
             {
                 "timestamp": "09:15 AM",
-                "message": "'James Mirakilin' (Version 4378-A) is a Warrior, born and raised in Temoria, identity: nA ",
+                "message": "'REDACTED' (Version 4378-A) is a Warrior, born and raised in Temoria, identity: nA ",
             },
             {
                 "timestamp": "09:20 AM",
@@ -53,11 +49,11 @@ universe_logs = [
             },
             {
                 "timestamp": "14:37 PM",
-                "message": "Discovered 'James Mirakilin' (Version 7623 A).",
+                "message": "Discovered 'REDACTED' (Version 7623 A).",
             },
             {
                 "timestamp": "14:37 PM",
-                "message": "'James Mirakilin' (Version 7623 A) is an underworld hacker specializing in taking down Cybercrimnals. Identity: nA",
+                "message": "'REDACTED' (Version 7623 A) is an underworld hacker specializing in taking down Cybercrimnals. Identity: nA",
             },
             {
                 "timestamp": "14:48 PM",
@@ -80,7 +76,7 @@ universe_logs = [
             },
             {
                 "timestamp": "10:33 AM",
-                "message": " No such name exists: 'James Mirakilin' (Version 9125 A).",
+                "message": " No such name exists: 'REDACTED' (Version 9125 A).",
             },
             {
                 "timestamp": "10:58 AM",
@@ -88,7 +84,7 @@ universe_logs = [
             },
             {
                 "timestamp": "16:07 PM",
-                "message": "'James Mirakilin' (Version 9125 A) has traveled through time. Destination: nA, Identity: nA",
+                "message": "'REDACTED' (Version 9125 A) has traveled through time. Destination: nA, Identity: nA",
             },
         ],
     },
@@ -107,7 +103,7 @@ universe_logs = [
             },
             {
                 "timestamp": "10:45 AM",
-                "message": " No such name exists: 'James Mirakilin' (Version 0712 B).",
+                "message": " No such name exists: 'REDACTED' (Version 0712 B).",
             },
             {
                 "timestamp": "12:46 PM",
@@ -115,7 +111,7 @@ universe_logs = [
             },
             {
                 "timestamp": "16:07 PM",
-                "message": "Rupture protocols exist in 0712 B, James Mirakilin' (Version 0712 B) Exists, Identity: nA",
+                "message": "Rupture protocols exist in 0712 B, REDACTED' (Version 0712 B) Exists, Identity: nA",
             },
         ],
     },
@@ -134,19 +130,29 @@ universe_logs = [
             },
             {
                 "timestamp": "22:37 PM",
-                "message": "'James Mirakilin' (Version 0712 B) Existence confirmed.",
+                "message": "'REDACTED' (Version 0712 B) Existence confirmed.",
             },
             {
                 "timestamp": "07:21 AM",
-                "message": "James Mirakilin has found and boarded the Ship on Manual Control",
+                "message": "REDACTED has found and boarded the Ship on Manual Control",
             },
             {
                 "timestamp": "14:22 PM",
-                "message": "James Mirakilin gives the Captain a fleet of Ships, Identity: nA",
+                "message": "REDACTED gives the Captain a fleet of Ships, Identity: nA",
             },
         ],
     },
 ]
+
+# Initialize colorama for colored text
+init(autoreset=True)
+
+on=1
+global x_val
+x_val=77
+
+global rec_val
+rec_val=543
 
 def clear():
     os.system( 'cls' )
@@ -161,6 +167,8 @@ def print_with_typing(text, delay=0.04, color=None):
     print()
 
 def main_2():
+    clear()
+
     print(colored(">> Accessing Ship Control Interface... Success!", "green"))
 
     uses = [
@@ -176,6 +184,9 @@ def main_2():
         if use=='Log System':
             print_with_typing(f"   - {use} : Available", delay=0,color="green")
             time.sleep(0.7)
+        elif use=='SPC Reactor Systems':
+            print_with_typing(f"   - {use} : Available", delay=0,color="green")
+            time.sleep(0.7)
         else:
             print_with_typing(f"   - {use} : Denied", delay=0,color="red")
             time.sleep(0.7)
@@ -183,16 +194,12 @@ def main_2():
     print_with_typing(f"   - Drone Controls : Available", delay=0, color="green")
     print()
     print_with_typing("\n> Ready for remote operations. Enter commands:", color="cyan")
-    print("   - 'scan_area <coordinates>' - Perform reconnaissance.")
-    print("   - 'capture_data <target>' - Collect data.")
     print("   - 'open <controls>' - Opens target Controls.")
-    print("   - 'engage_target <target>' - Engage specified target.")
-    print("   - 'select <target>' - Use target program.")
-    print("   - 'return_home <target>' - Return to base.")
     print("\n> Type 'help' for command list, or 'exit' to terminate.")
     fin=input("\n>")
 
     if fin.upper()=='OPEN DRONE CONTROLS':
+        clear()
 
         print(colored(">> Scanning for available drones...\n", "green"))
 
@@ -309,9 +316,76 @@ def main_2():
             print()         
 
     elif fin.upper()=='OPEN LOG SYSTEM':
+        clear()
         logs(universe_logs)
 
-    
+    elif fin.upper() == 'OPEN SPC REACTOR SYSTEMS' or fin.upper()=='OPEN SPC' or fin.upper()=='OPEN REACTOR':
+        clear()
+
+        print(colored(">> Initiating connection to SPC Reactor Systems...\n", "green"))
+
+        time.sleep(1)
+
+        rec_val=543
+        x_val=77
+
+        reactor_stats = {
+        "Reactor Temperature": (str(rec_val))+"°C",
+        "Fission Material Inserted": "UR-Ciliax-145",
+        "Power Output": (str(x_val)+'%'),
+        "Recharge in": "12 Years, 5 Months, 14 Days"
+        }
+
+        print(colored(">> Access granted to SPC Reactor Systems. Initiating control interface.", "green"))
+        print(colored(">> WARNING: Unauthorized access may lead to catastrophic consequences!", "red"))
+        print()
+        print()
+        print('==================================================================================================')
+
+        print("\n>> Current Reactor Stats:")
+        for stat, value in reactor_stats.items():
+            print_with_typing(f"   - {stat}: {value}")
+
+        # Reactor drawing
+        reactor_drawing = '''
+                  _______
+                 |       |
+                 |       |
+                 |_______|
+                /         \\
+               /           \\
+              |             |
+              |             |
+              |             |
+               \\           /
+                \\_________/
+        '''
+
+        #print(reactor_drawing)
+
+        print()
+        print('==================================================================================================')
+
+        print_with_typing("\n> Ready for remote operations. Enter commands:", color="cyan")
+        print("   - 'change_temperature' - Change reactor temperature.")
+        print("   - 'adjust_output' - Adjust reactor power output.")
+        print("\n> Type 'help' for command list, or 'exit' to terminate.")
+        cmd = input("\n>")
+
+        if cmd.upper() == 'CHANGE_TEMPERATURE':
+            rec_val = float(input("\n> Enter new reactor temperature: "))
+            print(colored(f">> Changing reactor temperature to {rec_val}°C...", "green"))
+            time.sleep(2)
+            print(colored(">> Reactor temperature adjusted successfully.", "green"))
+
+        elif cmd.upper() == 'ADJUST_OUTPUT':
+            x_val = float(input("\n> Enter new reactor power output: "))
+            print(colored(f">> Adjusting reactor power output to {x_val}%", "green"))
+            time.sleep(2)
+            print(colored(">> Reactor power output adjusted successfully.", "green"))
+
+        else:
+            print(colored(">> Invalid command.", "red"))
 
 def main():
     clear()
@@ -332,7 +406,7 @@ def main():
 
         print('Initialization required')
         t=input("> ")
-        if not t.upper()=='INITIALIZE':
+        if not t.upper()=='0000':
             print_with_typing('>> ERROR!',delay=0,color='red')
             sys.exit()
         print_with_typing("> Initiating Ship Control Interface...", color="cyan")
@@ -410,12 +484,12 @@ def main():
 
             print(colored("> Secure communication channel established", "cyan"))
             print()
-            print(colored(">> Attention, Unknown Fleet. This is James Mirakilin of the 6 Mirakilin Council"))
+            print(colored(">> Attention, Unknown Fleet. This is REDACTED of the 6 Mirakilin Council"))
             print(colored(">> Please identify yourselves and state your intentions on this world."))
             print()
             print(colored("> Awaiting response from the Unknown Fleet...", "green"))
             print()
-            print(colored(">> COMMUNICATIONS HAVE BEEN SWITCHED OFF IN THE UNKOWN FLEET! <<", color='red'))
+            print(colored(">> COMMUNICATIONS HAVE BEEN SWITCHED OFF IN THE REDACTED FLEET! <<", color='red'))
 
             time.sleep(2)
 

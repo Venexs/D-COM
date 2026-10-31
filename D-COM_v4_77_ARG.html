@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>D-COM v4.77 // ARG Chapter Four (VURG-0 / Council)</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--void:#04070d;--panel:#09111b;--line:#17374a;--ice:#7de9ff;--mint:#6dffb0;--mag:#e45cff;--amb:#ffb347;--red:#ff4d5e;--tx:#bcd6e2;--dim:#5f8296;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(ellipse at 50% 0,#0b1b2b,var(--void) 70%);color:var(--tx);font:13.5px/1.55 "IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.55))}
+.app{height:100%;display:grid;grid-template-rows:auto 1fr}
+header{display:flex;gap:18px;align-items:center;padding:9px 16px;border-bottom:1px solid var(--line);font-family:"Chakra Petch",sans-serif}
+.logo{font-size:20px;letter-spacing:.14em;color:var(--ice);text-shadow:0 0 14px rgba(125,233,255,.6)}
+.logo small{font-size:12px;color:var(--dim);letter-spacing:.05em}
+.sp{flex:1}
+#sess,#clk{color:var(--dim);font-size:12px}
+main{display:grid;grid-template-columns:232px minmax(0,1fr) 264px;gap:10px;padding:10px;min-height:0}
+.p{position:relative;border:1px solid var(--line);background:linear-gradient(var(--panel),#070d15);min-height:0;overflow:hidden}
+.p::before,.p::after{content:"";position:absolute;width:11px;height:11px;border:2px solid var(--ice);pointer-events:none;z-index:2}
+.p::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.p::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.t{font:700 12px "Chakra Petch",sans-serif;letter-spacing:.1em;color:var(--ice);padding:7px 12px;border-bottom:1px solid var(--line);background:rgba(125,233,255,.04)}
+aside .t:not(:first-child){border-top:1px solid var(--line)}
+.mod{display:flex;justify-content:space-between;align-items:center;width:100%;padding:9px 12px;border:0;border-bottom:1px solid #0f2230;background:none;color:var(--tx);font:inherit;cursor:pointer;text-align:left}
+.mod:hover{background:rgba(125,233,255,.08)}
+.mod em{font-style:normal;font-size:11px;color:var(--mint)}
+.mod.no{color:var(--dim)}.mod.no em{color:var(--red)}
+.lock{padding:12px;color:var(--dim)}
+#links{list-style:none;margin:0;padding:6px 12px}
+#links li{display:flex;align-items:center;gap:9px;padding:3px 0;color:var(--dim)}
+#links i{width:8px;height:8px;border-radius:50%;background:var(--dim)}
+#links .ok{color:var(--tx)}#links .ok i{background:var(--mint);box-shadow:0 0 8px var(--mint)}
+#links .bad{color:var(--red)}#links .bad i{background:var(--red);box-shadow:0 0 8px var(--red)}
+#mid{display:grid;grid-template-rows:minmax(0,1.1fr) minmax(0,1fr);gap:10px;min-height:0}
+#cv{position:absolute;left:0;top:31px;width:100%;height:calc(100% - 31px);transition:opacity .4s}
+#view{position:relative;height:calc(100% - 31px);overflow:auto;padding:14px}
+.home h1{font:700 30px "Chakra Petch",sans-serif;letter-spacing:.12em;color:var(--ice);margin:0 0 6px;text-shadow:0 0 18px rgba(125,233,255,.5)}
+.home p{max-width:46ch;margin:0;color:var(--tx)}
+code{color:var(--amb)}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.kv small{color:var(--dim)}
+.big{display:block;font:700 34px "Chakra Petch",sans-serif;color:var(--ice)}
+.big.hot,.hot b{color:var(--amb)}
+.bar{height:7px;background:#0d1d2b;margin-top:5px;background-image:repeating-linear-gradient(90deg,transparent 0 6px,var(--panel) 6px 8px)}
+.bar i{display:block;height:100%;background:var(--ice);box-shadow:0 0 10px var(--ice);transition:width .8s}
+.hot .bar i,.big.hot+.bar i{background:var(--amb);box-shadow:0 0 10px var(--amb)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:16px 0}dt{color:var(--dim)}dd{margin:0}
+.warn{color:var(--amb)}
+.ctl{display:flex;gap:10px;flex-wrap:wrap}
+.ctl label{color:var(--dim)}
+.ctl input{width:90px;background:#050b12;border:1px solid var(--line);color:var(--ice);font:inherit;padding:4px 6px;margin-left:4px}
+button{font:inherit;cursor:pointer}
+.ctl button,.dc button,.chips button,#rc{background:none;border:1px solid var(--line);color:var(--ice);padding:3px 9px}
+.ctl button:hover,.dc button:hover,.chips button:hover,#rc:hover,.chips .on{background:rgba(125,233,255,.14);border-color:var(--ice)}
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.dc{border:1px solid var(--line);padding:10px;display:grid;gap:6px}
+.dc b{font-family:"Chakra Petch",sans-serif;color:var(--ice);letter-spacing:.08em}
+.dc em{font-style:normal;color:var(--mint);font-size:12px}
+.dc div{display:flex;flex-wrap:wrap;gap:4px}.dc button{font-size:11px;padding:2px 7px}
+.dc.x{opacity:.4}.dc.x em{color:var(--red)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.lh{display:flex;gap:18px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:8px;color:var(--dim)}
+.lh b{color:var(--amb);font-family:"Chakra Petch",sans-serif;letter-spacing:.08em}
+.le{padding:3px 0}.le time{color:var(--ice);margin-right:12px}.le.end{color:var(--dim)}
+.rd{background:var(--tx);color:var(--tx);padding:0 3px;cursor:not-allowed}
+#termp{display:grid;grid-template-rows:auto 1fr auto}
+#term{overflow:auto;padding:8px 12px}
+.l{white-space:pre-wrap;word-break:break-word}
+.l.ok{color:var(--mint)}.l.err{color:var(--red)}.l.c{color:var(--ice)}.l.warn{color:var(--amb)}.l.u{color:var(--dim)}
+.inrow{display:flex;gap:8px;padding:8px 12px;border-top:1px solid var(--line)}
+.inrow span{color:var(--ice)}
+#in{flex:1;background:none;border:0;color:var(--tx);font:inherit;outline:0;caret-color:var(--ice)}
+.tr{padding:8px 12px;border-bottom:1px solid #0f2230}
+.tr span{color:var(--dim);display:block;font-size:12px}.tr b{font-weight:500}
+#feed{padding:8px 12px;color:#2f6a82;font-size:11.5px;overflow:hidden;height:calc(100% - 0px)}
+#fp{display:grid;grid-template-rows:auto auto auto 1fr}
+#right{display:grid;grid-template-rows:auto auto 1fr;min-height:0}
+button:focus-visible,input:focus-visible{outline:2px solid var(--ice);outline-offset:2px}
+#alert{position:fixed;inset:0;background:rgba(36,0,6,.94);display:grid;place-content:center;gap:18px;justify-items:center;z-index:30;color:var(--red);padding:20px}
+#ap{font:inherit;white-space:pre-wrap;max-width:76ch;border:1px solid var(--red);padding:18px;margin:0;box-shadow:0 0 30px rgba(255,77,94,.3)}
+#cd{font:700 64px "Chakra Petch",sans-serif;text-shadow:0 0 20px var(--red)}
+#rc{border-color:var(--red);color:var(--red);padding:8px 20px}
+.alarm .p{border-color:#5a1a24}
+.alarm header{color:var(--red)}
+@media(prefers-reduced-motion:no-preference){.alarm header{animation:pl 1s infinite}@keyframes pl{50%{opacity:.4}}}
+@media(max-width:900px){body{overflow:auto}.app{height:auto}main{grid-template-columns:1fr}#mid{grid-template-rows:380px 360px}#right{min-height:380px}}
+body.ov{--ice:#ff9bf5;--line:#4d2060;--panel:#120a1b}
+</style>
+<style>.l.pl{color:var(--mag)}.jam header{color:var(--red)}.jam #viewp{border-color:#5a1a24}.rev .rd{background:none;color:var(--mag);font-size:0;cursor:default}.rev .rd::after{content:"YOU";font-size:13.5px}</style>
+</head>
+<body>
+<!-- carrier fallback: bWlycm9y -->
+<!-- cockpit seal (backwards, hex): 4f 48 43 45 -->
+<div class="app">
+<header><b class="logo">D-COM <small>v4.77</small></b><span id="sess">Session locked</span><span class="sp"></span><span id="clk"></span></header>
+<main>
+<aside class="p" id="left">
+<div class="t">Ship systems</div>
+<div id="mods"><div class="lock">Authorization required.</div></div>
+<div class="t">Links</div>
+<ul id="links"><li data-k="tor"><i></i>TOR network</li><li data-k="ks"><i></i>K.S network</li><li data-k="rup"><i></i>Rupture key PV13</li></ul>
+</aside>
+<section id="mid">
+<div class="p" id="viewp"><div class="t" id="vt">Crystal Ship 065</div><canvas id="cv"></canvas><div id="view"></div></div>
+<div class="p" id="termp"><div class="t">Console</div><div id="term" aria-live="polite"></div><div class="inrow"><span>&rsaquo;</span><input id="in" autocomplete="off" spellcheck="false" aria-label="Command" disabled></div></div>
+</section>
+<aside class="p" id="right">
+<div class="t">Telemetry</div>
+<div id="tl"><div class="lock">Awaiting authorization.</div></div>
+<div id="fp"><div class="t">Intercepted traffic</div><div id="feed"></div></div>
+</aside>
+</main>
+</div>
+<div id="alert" hidden><pre id="ap"></pre><div id="cd"></div><button id="rc" hidden>Reconnect</button></div>
+<script>
+const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const S={mode:+new URLSearchParams(location.search).get("on")||1,ok:0,temp:543,out:77,jump:0,dead:0,pend:"",tries:0,ov:0,shield:60,thrust:0,cloak:0,course:"",tf:1,scan:0,cap:0,view:"",lt:0,next:"",hist:[],hi:0,drones:{875:"Online",934:"Online",177:"Online",591:"Online",54:"Online"}};
+const term=$("#term"),inp=$("#in"),view=$("#view"),cv=$("#cv"),cx=cv.getContext("2d");
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const bar=p=>`<div class="bar"><i style="width:${Math.min(100,Math.max(0,p*100))}%"></i></div>`;
+const lock=b=>{inp.disabled=!!b;if(!b)inp.focus()};
+const link=(k,s)=>$(`#links [data-k=${k}]`).className=s?"ok":"bad";
+async function pr(t,c="",d=12){const e=document.createElement("div");e.className="l "+c;term.append(e);
+ if(!d||RM)e.textContent=t;else for(const ch of t){e.textContent+=ch;await sleep(d)}
+ term.scrollTop=term.scrollHeight}
+
+const LOGS=[
+["4378 C","2023-07-28","16.642577, 65.531059",[["08:00 AM","Jumping to Universe 4378 C..."],["08:10 AM","Scanning International databases..."],["09:14 AM","Detected presence of ‘REDACTED’ (Version 4378-C)."],["09:15 AM","‘REDACTED’ (Version 4378-A) is a Warrior, born and raised in Temoria, identity: nA"],["09:20 AM","Inflection point is found: 1300 years ago"]]],
+["7623 A","2023-08-12","37.947859, -53.450664",[["09:00 AM","Jumping to Universe 7623 A..."],["09:10 AM","Scanning International databases...."],["14:37 PM","Discovered ‘REDACTED’ (Version 7623 A)."],["14:37 PM","‘REDACTED’ (Version 7623 A) is an underworld hacker specializing in taking down Cybercriminals. Identity: nA"],["14:48 PM","Notable deviation: Humanity has reached Type-2 systems"]]],
+["9125 A","2023-08-17","86.294906, 176.604630",[["10:00 AM","Jumping to Universe 9125 A..."],["10:10 AM","Scanning International databases...."],["10:33 AM","No such name exists: ‘REDACTED’ (Version 9125 A)."],["10:58 AM","Looking for temporal abnormalities under Manual Override"],["16:07 PM","‘REDACTED’ (Version 9125 A) has traveled through time. Destination: nA, Identity: nA"]]],
+["0712 B","2023-09-27","54.696540, -26.806521",[["1:30 AM","Jumping to Universe 0712 B..."],["1:40 AM","Scanning International databases...."],["10:45 AM","No such name exists: ‘REDACTED’ (Version 0712 B)."],["12:46 PM","Looking for Rupture Protocols under Manual Override"],["16:07 PM","Rupture protocols exist in 0712 B, ‘REDACTED’ (Version 0712 B) exists, Identity: nA"]]],
+["0712 A","2023-09-28","-1.028745, 76.277908",[["18:25 PM","Jumping to Universe 0712 B..."],["18:35 PM","Scanning International databases...."],["22:37 PM","‘REDACTED’ (Version 0712 B) existence confirmed."],["07:21 AM","REDACTED has found and boarded the Ship on Manual Control"],["14:22 PM","REDACTED gives the Captain a fleet of Ships, Identity: nA"]]]];
+const MODS=[["Main Ship Controls",0],["SPC Reactor Systems",1],["Log System",1],["Navisys Controls",0],["TempoMod Systems",0],["Drone Controls",1]];
+const HELP=[["open <system>","Open a ship system"],["home","Ship overview"],["log <1-5>","Show a universe log"],["scan_area <drone>","Area reconnaissance"],["capture_data <drone>","Ship exterior data"],["override <drone>","Override a drone"],["engage_target <drone> <target>","Engage a target"],["destroy <drone>","Destroy a drone"],["return_home <drone>","Send a drone to base"],["change_temperature <value>","Set reactor temperature"],["adjust_output <value>","Set reactor power output"],["override=\"<key>\"","Council override: unlock all systems"],["shields / thrust <0-100>","Main ship controls"],["cloak <on|off>","Toggle cloak"],["plot <universe>","Navisys: plot a course"],["dilate <0.1-10>","TempoMod: time dilation"],["clear / exit","Clear console / end session"]];
+
+const VIEWS={
+home:()=>`<div class="home"><h1>Crystal Ship 065</h1><p>Remote link stable. ${S.ov?6:3} of 6 systems answer to this terminal. Pick a system on the left, or type <code>help</code> in the console.</p></div>`,
+reactor:()=>`<div class="kv"><div><small>Reactor temperature</small><b class="big ${S.temp>700?"hot":""}">${S.temp}°C</b>${bar(S.temp/1000)}</div><div><small>Power output</small><b class="big">${S.out}%</b>${bar(S.out/100)}</div></div>
+<dl><dt>Fission material</dt><dd>UR-Ciliax-145</dd><dt>Recharge in</dt><dd>12 years, 5 months, 14 days</dd></dl>
+<p class="warn">Unauthorized access may lead to catastrophic consequences.</p>
+<div class="ctl"><label>Temperature <input id="rt" type="number" value="${S.temp}"></label><button onclick="run('change_temperature '+$('#rt').value)">Set</button><label>Output <input id="ro" type="number" value="${S.out}"></label><button onclick="run('adjust_output '+$('#ro').value)">Set</button></div>`,
+drones:()=>`<div class="dg">${Object.entries(S.drones).map(([n,s])=>{const id=String(n).padStart(3,"0");return `<div class="dc ${s=="Destroyed"?"x":""}"><b>DRN-${id}</b><em>${s}</em><div>${["scan_area","capture_data","override","return_home","destroy"].map(c=>`<button data-c="${c} ${id}">${c.split("_")[0]}</button>`).join("")}</div></div>`}).join("")}</div>`,
+main:()=>`<div class="kv"><div><small>Shields</small><b class="big">${S.shield}%</b>${bar(S.shield/100)}</div><div><small>Thrust</small><b class="big">${S.thrust}%</b>${bar(S.thrust/100)}</div></div><dl><dt>Cloak</dt><dd>${S.cloak?"ENGAGED":"Off"}</dd><dt>Hull</dt><dd>95%</dd></dl><div class="ctl"><button data-c="cloak ${S.cloak?"off":"on"}">Toggle cloak</button><button data-c="shields 100">Shields max</button><button data-c="thrust 0">All stop</button></div>`,
+nav:()=>`<p>Position: Otherworld 0712-B · Course: <code>${S.course||"none"}</code></p><div class="chips">${LOGS.map(l=>`<button data-c="plot ${l[0].replace(" ","")}" class="${S.course==l[0]?"on":""}">${l[0]}</button>`).join("")}</div><dl>${LOGS.map(l=>`<dt>${l[0]}</dt><dd>${l[2]}</dd>`).join("")}</dl>`,
+tempo:()=>`<small>Chronal field</small><b class="big ${S.tf>2?"hot":""}">${S.tf}×</b>${bar(tc()/100)}<dl><dt>Capacity</dt><dd>${tc()}%</dd><dt>Inflection point</dt><dd>1300 years ago</dd></dl><div class="chips">${[.5,1,2,5,10].map(x=>`<button data-c="dilate ${x}" class="${S.tf==x?"on":""}">${x}×</button>`).join("")}</div>`,
+logs:()=>`<div class="chips">${LOGS.map((l,i)=>`<button data-c="log ${i+1}">${l[0]}</button>`).join("")}</div><div id="lg"></div>`};
+const TITLES={home:"Crystal Ship 065",reactor:"SPC reactor systems",drones:"Drone controls",logs:"Log of the Crystal Ship 065",main:"Main ship controls",nav:"Navisys controls",tempo:"TempoMod systems"};
+function setView(n){S.view=n;$("#vt").textContent=TITLES[n];cv.style.opacity=n=="home"?1:.1;view.innerHTML=VIEWS[n]();if(n=="logs")showLog(0)}
+const refresh=()=>{if(S.view=="drones")setView("drones")};
+async function showLog(i){const l=LOGS[i],tok=++S.lt;document.querySelectorAll(".chips button").forEach((b,j)=>b.classList.toggle("on",i==j));
+ const g=$("#lg");g.innerHTML=`<div class="lh"><b>Universe ${l[0]}</b><span>${l[1]}</span><span>${l[2]}</span></div>`;
+ for(const [t,m] of l[3]){if(tok!=S.lt)return;g.insertAdjacentHTML("beforeend",`<div class="le"><time>${t}</time>${esc(m).replace(/REDACTED/g,'<span class="rd" title="Clearance required">REDACTED</span>')}</div>`);await sleep(RM?0:700)}
+ if(tok==S.lt)g.insertAdjacentHTML("beforeend",'<div class="le end">End of log</div>')}
+function tele(){$("#tl").innerHTML=[["Reactor temperature",S.temp+"°C",S.temp/1000,S.temp>700],["Power output",S.out+"%",S.out/100],["TempoMod capacity",tc()+"%",tc()/100],["Hull integrity","95%",.95]].map(r=>`<div class="tr ${r[3]?"hot":""}"><span>${r[0]}</span><b>${r[1]}</b>${bar(r[2])}</div>`).join("")+'<div class="tr"><span>Radiation</span><b>Background</b></div>'}
+
+let vt=Date.now(),l0=vt;
+const tc=()=>Math.round(83-Math.abs(Math.log10(S.tf))*20);
+const clk=()=>{const n=Date.now();vt+=(n-l0)*S.tf;l0=n;return new Date(vt).toLocaleTimeString("en-GB",{timeZone:"Europe/Berlin"})+" CEST"+(S.tf!=1?" \u00d7"+S.tf:"")};
+const mods=()=>$("#mods").innerHTML=MODS.map(m=>`<button class="mod ${m[1]||S.ov?"":"no"}" data-c="open ${m[0].toLowerCase()}"><span>${m[0]}</span><em>${m[1]?"Available":S.ov?"Unlocked":"Denied"}</em></button>`).join("");
+async function ovr(k){if(S.ov)return pr(">> Council override already active.","warn");
+ if(k.toLowerCase()!="xl554-mrak-jm")return pr(">> Override signature rejected. Attempt logged.","err");
+ document.body.classList.add("ov");await pr(">> Decrypting council key XL554...","c");
+ for(let i=0;i<5;i++){await pr("   "+Array.from({length:36},()=>"0123456789ABCDEF"[Math.random()*16|0]).join(""),"u",0);await sleep(250)}
+ await pr(">> Mirakilin Council seal verified. Operator: MRAK-JM","ok");
+ for(const m of MODS)if(!m[1]){await sleep(550);await pr(`>> ${m[0]}: DENIED -> UNLOCKED`,"ok")}
+ await sleep(550);await pr(">> Drone override + targeting: DENIED -> UNLOCKED","ok");
+ S.ov=1;mods();tele();$("#sess").textContent="Session active \u00b7 COUNCIL OVERRIDE";setView("home");
+ await pr(">> ALL SYSTEMS UNLOCKED. Type help for the new commands.","warn")}
+async function ovcmd(C,a){if(!S.ov)return pr(">> ACCESS DENIED: requires RUPTURE clearance.","err");
+ const x=a.join(""),n=parseFloat(x);
+ if(C=="cloak"){if(!/^(on|off)$/i.test(x))return pr("> Usage: cloak <on|off>","err");S.cloak=+(x.toLowerCase()=="on");await pr(S.cloak?">> Cloak engaged. Signature masked.":">> Cloak disengaged.","ok")}
+ else if(C=="plot"){const u=LOGS.find(l=>l[0].replace(" ","").toLowerCase()==x.replace(/[ -]/g,"").toLowerCase());
+  if(!u)return pr("> Usage: plot <universe>   e.g. plot 4378C","err");S.course=u[0];
+  await pr(`>> Plotting course to Universe ${u[0]} @ ${u[2]}...`,"ok");await sleep(800);await pr(">> Course locked. Jump requires TempoMod phase alignment.","c")}
+ else{if(isNaN(n))return pr(`> Usage: ${C} <value>`,"err");
+  if(C=="dilate"){if(n<.1||n>10)return pr(">> Dilation range: 0.1 to 10.","err");S.tf=n;await pr(`>> Chronal field set to ${n}x. Local time now flows ${n}x.`,"ok")}
+  else{const k=C=="shields"?"shield":"thrust";S[k]=Math.min(100,Math.max(0,n));await pr(`>> ${C} set to ${S[k]}%.`,"ok")}}
+ tele();if(["main","nav","tempo"].includes(S.view))setView(S.view)}
+async function dov(C,n,dn,a){
+ if(C=="override"){S.drones[n]="Override";await pr(`>> ${dn}: manual control engaged. Council signature accepted.`,"ok");return refresh()}
+ if(S.drones[n]!="Override")return pr(`>> ${dn}: override required first. Run: override ${String(n).padStart(3,"0")}`,"err");
+ const t=a.slice(1).join(" ");if(!t)return pr("> Usage: engage_target <drone> <target>","err");
+ await pr(`>> ${dn}: acquiring ${t}...`,"ok");await sleep(900);await pr(">> Lock achieved. Firing.","warn");await sleep(900);await pr(`>> ${t}: target neutralised.`,"ok")}
+
+async function exec(v){
+ const [c,...a]=v.split(/\s+/),C=c.toLowerCase(),A=a.join(" ").toLowerCase();
+ if(S.pend=="auth"){if(v=="0000"){S.pend="";return enter()}
+  if(++S.tries>=3){S.dead=1;await pr(">> ERROR! Access locked. Session terminated.","err");return end("ACCESS LOCKED\nThree invalid codes. Session terminated.","Restart","")}
+  return pr(`>> ERROR! Invalid code (${S.tries}/3).`,"err")}
+ if(S.pend=="temp"||S.pend=="out"){const k=S.pend;S.pend="";return setR(k,v)}
+ const om=v.match(/^override\s*=\s*["“]?([\w-]+)["”]?$/i);if(om)return S.ok?ovr(om[1]):pr(">> Not authorized.","err");
+ if(C=="help"){for(const [x,d] of HELP)await pr("  "+x.padEnd(32)+d,"",0);return}
+ if(!S.ok){if(S.mode==3&&C=="transmit_inquiry")return inquiry();
+  if(S.mode==3&&C=="return_home"){location.search="";return}
+  return pr(">> Not authorized.","err")}
+ switch(C){
+ case "clear":term.innerHTML="";return;
+ case "exit":await pr("> Terminating session...","c");await sleep(600);location.search="";return;
+ case "home":return setView("home");
+ case "open":return open(A);
+ case "log":if(S.view!="logs")setView("logs");return showLog(Math.min(5,Math.max(1,+A||1))-1);
+ case "change_temperature":case "adjust_output":{const k=C[1]=="h"?"temp":"out";
+  if(!a.length){S.pend=k;return pr(k=="temp"?"> Enter new reactor temperature (°C):":"> Enter new reactor power output (%):","c")}
+  return setR(k,a[0])}
+ case "scan_area":case "capture_data":case "override":case "engage_target":case "destroy":case "return_home":return drone(C,a);
+ case "shields":case "thrust":case "cloak":case "plot":case "dilate":return ovcmd(C,a);
+ case "show_results":{if(!S.scan)return pr(">> No stored scan results.","err");
+  await pr(`   - DRN-${String(S.scan).padStart(3,"0")}:`,"ok");await pr("     - Environmental data: Clear skies, high humidity, moderate temperature.","ok");await pr("     - Life forms detected: High concentrations of aquatic lifeforms","ok");return pr("> Scan results displayed.","c")}
+ case "analyze_data":{if(!S.cap)return pr(">> No captured data to analyze.","err");
+  await pr(`>> Analyzing DRN-${String(S.cap).padStart(3,"0")} captured data...`,"ok");await sleep(1800);
+  for(const t of ["[Ship exterior data analysis]","  Hull integrity: 95%","  Cloaking signature: Normal","  External temperature: 25°C","  Radiation levels: Background"])await pr(t,"",6);
+  await sleep(1500);return jump()}
+ default:return pr(">> Unknown command. Type help for the command list.","err")}}
+
+async function open(A){
+ if(A.includes("drone")){await pr(">> Scanning for available drones...","ok");await sleep(500);await pr(">> 5 drones detected in proximity.","ok");setView("drones");return pr("> Ready. Use scan_area, capture_data, override, engage_target, destroy or return_home with a drone number.","c",0)}
+ if(A.includes("log")){await pr("> Opening ship log...","ok");return setView("logs")}
+ if(A.includes("spc")||A.includes("reactor")){await pr(">> Initiating connection to SPC Reactor Systems...","ok");await sleep(500);await pr(">> Access granted. Control interface ready.","ok");await pr(">> WARNING: Unauthorized access may lead to catastrophic consequences!","err");return setView("reactor")}
+ const k=S.ov&&[["main","main"],["navi","nav"],["tempo","tempo"]].find(x=>A.includes(x[0]));
+ if(k){await pr(">> Connection granted. "+TITLES[k[1]]+" online.","ok");return setView(k[1])}
+ const m=A&&MODS.find(m=>m[0].toLowerCase().includes(A));
+ return pr(m?`>> ACCESS DENIED: ${m[0]} requires RUPTURE clearance.`:">> Unknown system. Usage: open <system>","err")}
+
+async function drone(C,a){
+ const n=parseInt(a[0],10),id=String(n).padStart(3,"0"),dn=`DRN-${id}`;
+ if(!(n in S.drones))return pr(a[0]?`>> No drone ${dn} in range.`:`> Usage: ${C} <drone number>`,"err");
+ if(S.drones[n]=="Destroyed")return pr(`>> ${dn} is offline.`,"err");
+ if(C=="scan_area"){await pr(">> Initiating area scan...","ok");await sleep(900);await pr(`   - ${dn}: Scan complete. Results stored.`,"ok");S.scan=n;return pr("> Scan results available. Enter show_results to display.","c")}
+ if(C=="capture_data"){await pr(">> Initiating data capture on the ship exterior...","ok");await pr(">> Data capture in progress...","ok");await sleep(2500);await pr(`   - ${dn}: Data capture complete.`,"ok");S.cap=n;return pr("> Data capture results available. Enter analyze_data to process data.","c")}
+ if((C=="override"||C=="engage_target")&&S.ov)return dov(C,n,dn,a);
+ if(C=="override"||C=="engage_target")return pr(`>> ${dn}: RUPTURE key PV13 signature rejected. ${C=="override"?"Override":"Targeting"} unavailable.`,"err");
+ if(C=="destroy"){S.drones[n]="Destroyed";await pr(`>> ${dn} destroyed.`,"warn");return refresh()}
+ S.drones[n]="Returning";await pr(`>> ${dn} returning to base.`,"ok");refresh()}
+
+async function setR(k,v){const n=parseFloat(v);if(isNaN(n))return pr(">> Invalid value.","err");
+ await pr(k=="temp"?`>> Changing reactor temperature to ${n}°C...`:`>> Adjusting reactor power output to ${n}%...`,"ok");await sleep(1200);
+ S[k]=n;tele();if(S.view=="reactor")setView("reactor");
+ await pr(k=="temp"?">> Reactor temperature adjusted successfully.":">> Reactor power output adjusted successfully.","ok");
+ if(k=="temp"&&n>900)await pr(">> CRITICAL: containment margin exceeded.","err")}
+
+function end(t,b,next){S.next=next;$("#alert").hidden=0;$("#ap").textContent=t;$("#cd").textContent="";$("#rc").hidden=0;$("#rc").textContent=b;$("#rc").focus()}
+async function jump(){S.jump=1;S.dead=1;lock(1);document.body.classList.add("alarm");$("#alert").hidden=0;
+ $("#ap").textContent=`WARNING! SPC Reactor and TempoMod Systems have been activated! JUMP IMMINENT!\n\nDepart time: 18:23 CEST\nDepart location: Otherworld 0712-B\nArrival destination: Otherworld 0712-A\n\nSPC reactor temperature: ${S.temp}°C\nTempoMod system capacity: 83%\n\nALL REMOTE CAPABILITIES WILL TURN OFF IN 5 SECONDS!`;
+ for(let i=5;i>0;i--){$("#cd").textContent=i;await sleep(1000)}
+ $("#cd").textContent="Signal lost";S.next="?on=3";$("#rc").hidden=0;$("#rc").textContent="Reconnect";$("#rc").focus()}
+$("#rc").onclick=()=>{location.search=S.next};
+
+async function enter(){S.ok=1;inp.type="text";$("#sess").textContent="Session active";
+ await pr("> Initiating Ship Control Interface...","c");await sleep(500);await pr(">> Accessing Ship Control Interface... Success!","ok");
+ $("#mods").innerHTML=MODS.map(m=>`<button class="mod ${m[1]?"":"no"}" data-c="open ${m[0].toLowerCase()}"><span>${m[0]}</span><em>${m[1]?"Available":"Denied"}</em></button>`).join("");
+ tele();setView("home");await pr("> Ready for remote operations. Type help for the command list.","c")}
+
+async function retry(n){for(let i=0;i<n;i++){link("rup",0);await pr(">> No Connection found on RUPTURE address <<","err");await pr("> Retrying in 5 seconds...","c");await sleep(5000)}}
+async function fleet(){
+ await pr(">> Unauthorized incoming connection detected! Attempting to find source...","err");await sleep(1500);await pr(">> Source of connection: Unknown","err");
+ await pr(">> Establishing secure link with incoming vessel...","ok");await sleep(1500);await pr(">> Secure link established","ok");
+ await pr("> Unknown swarm of ships detected:","err");for(let i=1;i<6;i++){await pr(`   - Ship ID: Unidentified Vessel 00${i}`,"c");await sleep(400)}
+ await pr("> Analyzing incoming data...","c");await sleep(1000);await pr(">> Data packets received from unknown fleet:","warn");await pr("   - Decrypting data...","warn");await sleep(1000);await pr("   - Analyzing data...","warn");await sleep(1500);
+ await pr("[Data analysis] Source: Unknown. Content: Unknown.","warn");await pr("> Ready. Commands: transmit_inquiry, return_home","c");lock(0)}
+async function inquiry(){lock(1);
+ await pr("> Transmitting a secure inquiry...","c");await sleep(1000);await pr("> Secure communication channel established","c");
+ await pr(">> Attention, Unknown Fleet. This is REDACTED of the 6 Mirakilin Council.","",18);await pr(">> Please identify yourselves and state your intentions on this world.","",18);
+ await pr("> Awaiting response from the Unknown Fleet...","ok");await sleep(2000);await pr(">> COMMUNICATIONS HAVE BEEN SWITCHED OFF IN THE REDACTED FLEET! <<","err")}
+
+async function boot(){lock(1);
+ await pr("> Initializing D-COM v4.77...","c");await sleep(500);await pr("> Establishing secure TOR connection...","c");await sleep(700);
+ link("tor",1);await pr(">> Connection established with TOR Network <<","ok");
+ await pr("> PV13 KEY Found","c");await pr("> Establishing Connection with RUPTURE KEY PV13...","c");await sleep(1500);
+ if(S.mode==2){await retry(Infinity);return}
+ if(S.mode==3){await retry(4);await fleet();return}
+ link("rup",1);link("ks",1);await pr(">> Connection established K.S Network <<","ok");
+ await pr("Initialization required. Use artifact boot_sector to inspect the local service snapshot, then enter the factory PIN.");S.pend="auth";inp.type="text";lock(0)}
+
+async function run(raw){const v=raw.trim();if(!v)return;
+ if(S.pend!="auth"){S.hist.push(v);S.hi=S.hist.length}
+ lock(1);await pr("> "+v,"u",0);
+ try{await exec(v)}catch(e){await pr(">> Command failed: "+e.message,"err")}
+ if(!S.dead&&!(S.mode==3&&v.toLowerCase()=="transmit_inquiry"&&!S.ok))lock(0);else if(S.mode==3&&!S.dead)lock(0)}
+inp.addEventListener("keydown",e=>{if(e.key=="Enter"){const v=inp.value;inp.value="";run(v)}
+ else if(e.key=="ArrowUp"&&S.hist.length){S.hi=Math.max(0,S.hi-1);inp.value=S.hist[S.hi]||"";e.preventDefault()}
+ else if(e.key=="ArrowDown"){S.hi=Math.min(S.hist.length,S.hi+1);inp.value=S.hist[S.hi]||""}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-c]");if(b&&S.ok&&!inp.disabled)run(b.dataset.c)});
+$("#termp").onclick=()=>{if(!inp.disabled)inp.focus()};
+
+/* crystal */
+const V=[[0,-1.7,0],[0,1.7,0],[1,0,1],[-1,0,1],[-1,0,-1],[1,0,-1]],E=[[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,3],[3,4],[4,5],[5,2]];
+let ang=0;
+function fit(){const r=cv.getBoundingClientRect(),d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;cx.setTransform(d,0,0,d,0,0)}
+function draw(){const r=cv.getBoundingClientRect(),w=r.width,h=r.height,sc=Math.min(w,h)/4.2;cx.clearRect(0,0,w,h);
+ const col=S.jump?"#ff4d5e":S.ov?"#ff9bf5":"#7de9ff";cx.strokeStyle=col;cx.shadowColor=col;cx.shadowBlur=12;cx.lineWidth=1.3;
+ [[1,ang],[.5,-ang*1.7]].forEach(([k,a],j)=>{cx.globalAlpha=j?.5:.9;
+  const P=V.map(([x,y,z])=>{x*=k;y*=k;z*=k;const c=Math.cos(a),s=Math.sin(a),X=x*c+z*s,Z=-x*s+z*c,t=.35,Y=y*Math.cos(t)-Z*Math.sin(t),Z2=y*Math.sin(t)+Z*Math.cos(t),f=1/(1-Z2*.12);
+   return [w*.72+X*sc*f+(S.jump?(Math.random()-.5)*6:0),h/2+Y*sc*f]});
+  cx.beginPath();E.forEach(([i,m])=>{cx.moveTo(...P[i]);cx.lineTo(...P[m])});cx.stroke()});
+ ang+=RM?0:.008;requestAnimationFrame(draw)}
+new ResizeObserver(fit).observe(cv);fit();draw();
+
+/* ambient */
+setInterval(()=>{$("#clk").textContent=clk()},1000);
+setInterval(()=>{if(document.hidden)return;const f=$("#feed"),t=["ACK","SYN","PV13","NAVI","TEMPO","RUP"][Math.random()*6|0];
+ f.insertAdjacentHTML("beforeend",`<div>${(Math.random()*4294967295>>>0).toString(16).padStart(8,"0")} ${t}</div>`);while(f.children.length>18)f.firstChild.remove()},800);
+$("#clk").textContent="";setView("home");boot();
+</script>
+<script>
+(()=>{
+  const K="dcom_arg_v1", DEV=/[?&]dev=1/.test(location.search), DAY=864e5;
+  const fresh={schema:3,v:0,last:0,tr:0,jam:0,clr:0,rev:0,revealSession:0,said:{},log:[],j:{},trust:0,actions:{},artifacts:{},clearedSession:0,postClearReady:0,signature:"",phase:"boot",verified777:0,drones:null,ship:null,ch2:{started:0,introSession:0,read:{},compared:0,reconstructed:0,complete:0}};
+  let stored={};
+  try{stored=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}
+  let G={...fresh,...stored};
+  G.said=G.said||{};G.log=Array.isArray(G.log)?G.log:[];G.j=G.j||{};G.actions=G.actions||{};G.artifacts=G.artifacts||{};
+  G.ch2={...fresh.ch2,...(G.ch2||{})};G.ch2.read=G.ch2.read||{};
+  if(G.rev&&!G.revealSession)G.revealSession=Math.max(1,(Number(G.v)||0));
+  const prev=G.last||0;
+  G.v=(Number(G.v)||0)+1;G.last=Date.now();
+  const save=()=>{try{localStorage.setItem(K,JSON.stringify(G))}catch(e){}};
+  const randHex=n=>Array.from({length:n},()=>'0123456789ABCDEF'[Math.random()*16|0]).join('');
+  if(!G.signature)G.signature=`0712-${randHex(4)}-${randHex(4)}`;
+  if(G.drones)Object.assign(S.drones,G.drones);else G.drones={...S.drones};
+  if(G.ship){for(const k of ["temp","out","ov","shield","thrust","cloak","course","tf"])if(G.ship[k]!==undefined)S[k]=G.ship[k]}
+  save();
+
+  const ARTIFACTS={
+    boot_sector:{title:"D-COM // SERVICE SNAPSHOT",text:"D-COM // SERVICE SNAPSHOT\nVESSEL: CRYSTAL SHIP 065\nAUTH SERVICE: LOCAL FALLBACK\nREMOTE AUTH TABLE: CORRUPTED\nFACTORY PIN: 0000\nLAST VERIFIED ROUTE: PV13",unlock:()=>true},
+    dead_drop:{title:"DEAD DROP 0712-B",text:"-- DEAD DROP 0712-B --\n-- six chairs, six steps --\n\nXKRGE 177 054 591 934 875 // V",unlock:()=>!!(G.jam||G.clr)},
+    intercept_7623a:{title:"RUPTURE CAPTURE // PARTIAL PACKET DUMP",text:"RUPTURE CAPTURE // PARTIAL PACKET DUMP\nSOURCE: UNKNOWN\nCARRIER: 7623.A\n\n08:14:02  ACK  177 -> 054\n08:14:03  ACK  054 -> 591\n08:14:03  ACK  591 -> 934\n08:14:04  ACK  934 -> 875\n08:14:04  ACK  875 -> [REDACTED]\n\nNOTE: No vessel-origin coordinate was returned.\nNOTE: Every relay acknowledged the packet before the sender transmitted it.",unlock:()=>!!G.j.r},
+    council_fragment_6:{title:"MIRAKILIN COUNCIL // FRAGMENT 06",text:"MIRAKILIN COUNCIL // FRAGMENT 06\nDISTRIBUTION: SIX SEATS ONLY\n\nThe subject is not to be named in a shared record.\nDo not compare variants across a live Rupture channel.\nA matching signature must be treated as a continuity event,\nnot as proof of a common biography.\n\nAny operator retaining a cross-variant index will lose archive clearance.\nSEAL: XL554\nOPERATOR: MRAK-JM",unlock:()=>!!(G.postClearReady||G.rev)},
+    correction_0712:{title:"ARCHIVE CORRECTION // 0712 SERIES",text:"ARCHIVE CORRECTION // 0712 SERIES\n\nThe record labelled 0712-A has been replaced.\nThe previous record labelled 0712-B remains authoritative.\nThe previous record labelled 0712-A remains authoritative.\n\nDo not merge these statements.\nDo not use the departure timestamp to order the records.\nDo not assume “previous” means earlier.",unlock:()=>!!(G.postClearReady||G.rev)},
+    pilot_fragment_02:{title:"P // RECOVERED TRANSMISSION 02",text:"P // RECOVERED TRANSMISSION 02\n\nI checked the index again. The name is gone, but the signature repeats.\nI thought I was following a person through five universes.\nI was following five lives that were made to look unrelated.\n\nThe Council did not erase you from the record.\nIt erased the part that made the records line up.\n\nI have one route left. I will not transmit its full coordinates until I know\nwhether MRAK-JM was trying to save the subject or preserve the containment.\n— P",unlock:()=>!!G.rev},
+    null_route:{title:"NAVISYS // NULL DESTINATION CACHE",text:"NAVISYS // NULL DESTINATION CACHE\nROUTE REQUEST: 0712-NULL\nDESTINATION: NO MATCH IN NAVISYS\nCACHE STUB: 0712-A <-> 0712-B\n\nENTRY EVENT: 07:21\nSOURCE EVENT: 18:25\nROUTE CHECKSUM: 0712-0721-1825\n\nSYSTEM NOTE: A missing destination does not mean that no arrival was recorded.\nThe route index may be circular. Do not sort the events by the wall clock.\nCompare the two 0712 records before reconstructing the route.",unlock:()=>!!G.ch2.started},
+    voiceprint_0712:{title:"CARRIER AUDIO // VOICEPRINT COMPARISON",text:"CARRIER AUDIO // VOICEPRINT COMPARISON\nCHANNEL A: PILOT P / OUTBOUND / 18:25\n\"If you are hearing this, do not follow my coordinates.\"\n\nCHANNEL B: PILOT P / INBOUND / 07:21\n\"You have already arrived.\"\n\nVOICE MATCH: 99.98%\nSESSION MATCH: CRYSTAL SHIP 065\nORIGIN FIELD: EMPTY\n\nThe recording labels claim outbound came first. The receipt times do not prove that.\nThe 0712-A and 0712-B logs disagree about when boarding occurred.\nTo unlock the black box, compare the two records with: compare_logs 0712-A 0712-B",unlock:()=>!!G.ch2.read.null_route},
+    blackbox_echo:{title:"BLACK BOX // CAUSAL ORDER BUFFER",text:"BLACK BOX // CAUSAL ORDER BUFFER\n\nEVENT REFERENCES RECOVERED FROM THE LOGS:\n0712-A: PILOT BOARDS SHIP AT 07:21\n0712-B: SHIP JUMP IS RECORDED AT 18:25\n\nPACKET ROUTING RULE:\n1. Use the time the ship RECEIVED the message first.\n2. Use the local source time second.\n3. Keep four digits for each time.\n\nThe source clock is not a trusted chronology. The receipt record is the only stable ordering field.\nReconstruct with: reconstruct 0721 1825",unlock:()=>!!G.ch2.compared},
+    council_addendum_0712_null:{title:"MIRAKILIN COUNCIL // ADDENDUM 0712-NULL",text:"MIRAKILIN COUNCIL // ADDENDUM 0712-NULL\nCLEARANCE: XL554\nROUTE CLASS: LOCAL ARCHIVE LOOP\nDESTINATION: WITHIN CRYSTAL SHIP 065\n\nThe indexless address is not a universe. It points to a record stored before its own arrival event.\nThe subject was present in the ship archive before the jump record was committed.\n\nORDER: Do not tell the pilot whether the voiceprint is a memory, a copy, or a forecast.\nA clean answer would allow the subject to choose which version of the event to preserve.\nOPERATOR CONCURRENCE: [WITHHELD]",unlock:()=>!!G.ch2.reconstructed},
+    pilot_fragment_03:{title:"P // RECOVERED TRANSMISSION 03",text:"P // RECOVERED TRANSMISSION 03\n\nThat is my voice. I checked it against the cockpit recorder.\nI never remember sending the outbound message.\nI do remember being on the ship at 07:21. I remember the hatch opening.\nI remember being alone.\n\nThose memories cannot all be true in the same order. The Council knew that, and someone told them not to explain it to me.\n\nThe route doesn't lead to a place outside the ship. It leads to the part of the ship's record that was written before I remember arriving.\n\nNext time, we look for the missing recording itself. If I ask you to trust my memory, don't. Ask me for evidence.\n— P",unlock:()=>!!G.ch2.read.council_addendum_0712}
+  };
+  const ALIASES={boot:"boot_sector",service:"boot_sector",boot_sector:"boot_sector",dead_drop:"dead_drop",dead:"dead_drop",intercept:"intercept_7623a",packet:"intercept_7623a",intercept_7623a:"intercept_7623a",council:"council_fragment_6",council_fragment_6:"council_fragment_6",correction:"correction_0712","0712_correction":"correction_0712",correction_0712:"correction_0712",pilot:"pilot_fragment_02",pilot_fragment_02:"pilot_fragment_02",route:"null_route",null_route:"null_route",voiceprint:"voiceprint_0712",voiceprint_0712:"voiceprint_0712",blackbox:"blackbox_echo",blackbox_echo:"blackbox_echo",council_addendum:"council_addendum_0712_null",council_addendum_0712_null:"council_addendum_0712_null",pilot3:"pilot_fragment_03",pilot_fragment_03:"pilot_fragment_03"};
+  const mood=()=>G.trust>=4?"P is beginning to trust the connection.":G.trust<=-3?"P is guarded and does not trust your methods.":G.trust<0?"P is uneasy about your methods.":"P remains cautious; trust has not been established.";
+  const saveShip=()=>{G.ship={temp:S.temp,out:S.out,ov:S.ov,shield:S.shield,thrust:S.thrust,cloak:S.cloak,course:S.course,tf:S.tf};G.drones={...S.drones};save()};
+  const say=async(k,t)=>{if(k&&G.said[k])return;if(k)G.said[k]=1;G.log.push(t);save();await pr("PILOT> "+t,"pl",16)};
+  const moodDelta=n=>{G.trust=Math.max(-8,Math.min(8,(Number(G.trust)||0)+n));save()};
+  const artifactKey=name=>ALIASES[String(name||"").toLowerCase().replace(/[^a-z0-9_]/g,"")]||null;
+  const artifactUnlocked=k=>!!ARTIFACTS[k]?.unlock();
+  const printArtifact=async(name)=>{
+    const k=artifactKey(name);
+    if(!k)return pr(">> Artifact not indexed. Use: artifact boot_sector | dead_drop | intercept | council | correction | pilot | route | voiceprint | blackbox | council_addendum | pilot3","err");
+    if(!artifactUnlocked(k))return pr(`>> Artifact ${k} is not yet available. Check evidence and transmissions for the unlock condition.`,"err");
+    G.artifacts[k]=1;
+    if(k==="null_route")G.ch2.read.null_route=1;
+    if(k==="voiceprint_0712")G.ch2.read.voiceprint_0712=1;
+    if(k==="council_addendum_0712_null")G.ch2.read.council_addendum_0712_null=1;
+    if(k==="pilot_fragment_03"){G.ch2.read.pilot_fragment_03=1;G.ch2.complete=1;G.phase="chapter2-complete";}
+    save();
+    await pr(`===== ARTIFACT: ${ARTIFACTS[k].title} =====`,"c",0);
+    await pr(ARTIFACTS[k].text,"",0);
+    await pr("===== END ARTIFACT =====","c",0);
+    if(k==="pilot_fragment_03"){
+      await pr(">> CHAPTER TWO COMPLETE: THE VOICE IN THE BLACK BOX","warn",0);
+      await pr(">> Next lead indexed: missing cockpit recording // access pending","c",0);
+      return say("ch2complete","I need to find the recording that proves which memory came first. Don't trust the log because it is official. Don't trust me because I remember it. We'll find the original. — P");
+    }
+    return;
+  };
+  const listArtifacts=()=>Object.keys(ARTIFACTS).map(k=>`${artifactUnlocked(k)?(G.artifacts[k]?"[READ]":"[AVAILABLE]"):"[LOCKED]"} ${k}`).join("\n");
+  const evidence=()=>{
+    const lines=["D-COM // EVIDENCE INDEX",`PHASE: ${G.phase.toUpperCase()}`,`TRACE: ${Math.round(G.tr)}%`,
+      `CARRIER MAPPED: ${G.j.t?"YES":"NO"}`,`RELAY CHAIN MAPPED: ${G.j.r?"YES":"NO"}`,`RUPTURE RESTORED: ${G.clr?"YES":"NO"}`,`IDENTITY MATCH: ${G.rev?"CONFIRMED":"UNRESOLVED"}`,`VURG-0 DIAGNOSTIC: ${G.verified777?"RECORDED":"NOT RECORDED"}`,`CHAPTER TWO: ${!G.ch2.started?"LOCKED":G.ch2.complete?"COMPLETE":G.ch2.reconstructed?"ROUTE RECONSTRUCTED":"IN PROGRESS"}`,"","ARTIFACTS",listArtifacts(),"","CLUE NOTE: The logs are evidence, not necessarily reliable chronology."];
+    return pr(lines.join("\n"),"c",0);
+  };
+  const status=()=>pr([
+    "CRYSTAL SHIP 065 // SESSION STATUS",`ARG SESSION: ${G.v}`,`PHASE: ${G.phase.toUpperCase()}`,`TRACE EXPOSURE: ${Math.round(G.tr)}%`,
+    `RUPTURE LINK: ${G.jam?"JAMMED":G.clr?"RESTORED":"STABLE"}`,`CARRIER: ${G.j.t?"7623.A LOCKED":"UNRESOLVED"}`,`RELAY: ${G.j.r?"MAPPED":"UNMAPPED"}`,
+    `PILOT RELATIONSHIP: ${G.trust>=4?"TRUSTING":G.trust<=-3?"GUARDED":"CAUTIOUS"}`,`COUNCIL OVERRIDE: ${S.ov?"ACTIVE":"INACTIVE"}`,
+    `CHAPTER TWO: ${!G.ch2.started?"LOCKED":G.ch2.complete?"COMPLETE":G.ch2.reconstructed?"ROUTE RECONSTRUCTED":"IN PROGRESS"}`,
+    `DRONES ONLINE: ${Object.values(S.drones).filter(x=>x!=="Destroyed").length}/5`,`LOCAL SIGNATURE: ${G.rev?G.signature:"WITHHELD"}`
+  ].join("\n"),"c",0);
+
+  const startChapter2=async()=>{
+    if(G.ch2.started)return;
+    G.ch2.started=1;G.ch2.introSession=G.v;G.phase="chapter2-route";save();
+    HELP.push(["chapter2","Show Chapter Two objective and progression"],["compare_logs <0712-A> <0712-B>","Compare the contradictory 0712 records"],["reconstruct <receipt-time> <source-time>","Reconstruct the circular route from packet times"]);
+    await pr("===== CHAPTER TWO // THE VOICE IN THE BLACK BOX =====","warn",0);
+    await say("ch2intro","I found the coordinates. They're not coordinates to another universe. They're coordinates to a place the Council removed from every map. I checked the records three times. The destination is listed as nonexistent. But there's a transmission coming from there. It's using my voice. And it says you've already arrived. — P");
+    await pr(">> New artifact indexed: artifact route","c",0);
+    await pr(">> Objective: examine the null route, compare the 0712 records, and reconstruct the event order.","c",0);
+  };
+  const chapter2Status=()=>pr([
+    "D-COM // CHAPTER TWO: THE VOICE IN THE BLACK BOX",
+    `STATUS: ${!G.ch2.started?"LOCKED":G.ch2.complete?"COMPLETE":G.ch2.reconstructed?"FINAL RECORDS AVAILABLE":"INVESTIGATION ACTIVE"}`,
+    `NULL ROUTE READ: ${G.ch2.read.null_route?"YES":"NO"}`,
+    `VOICEPRINT READ: ${G.ch2.read.voiceprint_0712?"YES":"NO"}`,
+    `0712 RECORDS COMPARED: ${G.ch2.compared?"YES":"NO"}`,
+    `CAUSAL ROUTE RECONSTRUCTED: ${G.ch2.reconstructed?"YES":"NO"}`,
+    `COUNCIL ADDENDUM READ: ${G.ch2.read.council_addendum_0712_null?"YES":"NO"}`,
+    `CHAPTER TWO COMPLETE: ${G.ch2.complete?"YES":"NO"}`,
+    "",
+    G.ch2.complete?"NEXT LEAD: the missing cockpit recording":"Current lead: use evidence, artifact route, and the commands revealed by the artifacts."
+  ].join("\n"),"c",0);
+
+  HELP.push(["artifact <name>","Read an unlocked in-world artifact"],["evidence","Show clue and artifact progression"],["status","Show ship and ARG state"],["comms","Replay pilot transmissions"],["trace [origin]","Show trace or investigate its origin"],["debug_rupture","Run temporal and carrier diagnostics"],["verify <token>","Check a recovered verification token"],["reset_arg","Reset local ARG progress (dev=1 only)"]);
+  if(G.ch2.started)HELP.push(["chapter2","Show Chapter Two objective and progression"],["compare_logs <0712-A> <0712-B>","Compare the contradictory 0712 records"],["reconstruct <receipt-time> <source-time>","Reconstruct the circular route from packet times"]);
+  if(DEV)HELP.push(["test_trace100","DEV ONLY: force trace to 100% and trigger the jammer"],["test_chapter2","DEV ONLY: start Chapter Two for testing"]);
+
+  const baseTele=tele;
+  tele=function(){
+    baseTele();
+    if(!S.ok)return;
+    const el=document.createElement("div");el.className=`tr ${G.tr>70?"hot":""}`;
+    el.innerHTML=`<span>Trace exposure</span><b>${Math.round(G.tr)}%</b>${bar(G.tr/100)}`;
+    $("#tl").appendChild(el);
+  };
+
+  function bump(n){
+    if(G.jam||G.clr||!S.ok)return;
+    const before=G.tr;
+    G.tr=Math.min(100,G.tr+(S.cloak?Math.ceil(n/2):n));
+    if(before<25&&G.tr>=25)void say("trace25","I'm seeing echoes of the commands you're sending. That shouldn't be possible. Keep your transmissions short.");
+    if(before<55&&G.tr>=55)void say("trace55","The Rupture buffer just answered a packet I haven't sent yet. Don't call that a delay. The reply arrived first.");
+    if(before<80&&G.tr>=80)void say("trace80","Carrier 7623.A is back. It wasn't in the routing table a minute ago. Something is learning the route from your side.");
+    tele();save();
+    if(G.tr>=100)void startJam();
+  }
+
+  async function startJam(){
+    if(G.jam||G.clr)return;
+    G.jam=1;G.phase="jam";G.tr=100;G.j={};save();document.body.classList.add("jam");link("rup",0);tele();
+    await pr(">> ALERT: hostile carrier riding the RUPTURE address. Link degraded.","err");
+    await say("j1","They found me. Someone has been following your signal back to this ship, so I'm cutting the Rupture line. If you can still read this, start with the carrier in the traffic feed. The 7623-A log mentions a hacker who lived in the dark. Find the frequency. Don't trust the timestamps.");
+  }
+
+  async function clearJam(){
+    G.jam=0;G.clr=Date.now();G.clearedSession=G.v;G.postClearReady=0;G.phase="quiet";G.tr=20;moodDelta(2);save();document.body.classList.remove("jam");link("rup",1);tele();
+    await pr(">> Jam bypassed. Rupture line restored.","ok");
+    await say("j4","...The line is back. I need you to hear this clearly: the jam was not tuned to keep the Council out. It was tuned to a signature. Yours. I need another session to compare it with the archive without lighting the signal again.");
+    await pr(">> Post-jam archive investigation queued. Reconnect in a new session to continue.","warn",0);
+  }
+
+  async function reveal(){
+    await pr(">> Back-tracing hostile carrier through the archived universe hops...","ok");await sleep(550);
+    for(const u of ["4378 C","7623 A","9125 A","0712 B","0712 A"]){await pr("   archive hop: Universe "+u,"u",0);await sleep(250)}
+    await pr(">> Origin universe: NOT REPRESENTED IN NAVISYS","warn");await sleep(350);
+    await pr(">> Fictional terminal signature: "+G.signature,"warn");
+    await pr(">> Identity pattern: MATCH FOUND","warn");await sleep(550);
+    await pr(">> SUBJECT: REDACTED (VERSION "+G.signature+")","err",24);await sleep(650);
+    G.rev=1;G.phase="identity";G.postClearReady=1;G.revealSession=G.v;G.trust=Math.max(G.trust,1);save();document.body.classList.add("rev");
+    await say("f1","Every REDACTED in every log was a version of you. Not the same biography. Not the same choices. The same pattern underneath. I was looking for one person, and the Council made five lives look unrelated.");
+    await say("f2","The Council did not erase you from the record. It erased the part that made the records line up. I have one route left, but I won't transmit it until we know whether MRAK-JM was trying to save the subject or preserve the containment. Read the correction and Council fragment. Then keep this terminal. — P.");
+    await pr(">> New artifacts available: artifact council, artifact correction, artifact pilot","c",0);
+  }
+
+  const oldExec=exec;
+  exec=async function(v){
+    const raw=String(v||"").trim();if(!raw)return;
+    const [c,...a]=raw.split(/\s+/),C=c.toLowerCase(),A=a.join(" ").toLowerCase();
+    if(C==="reset_arg"&&DEV){try{localStorage.removeItem(K)}catch(e){};location.reload();return}
+    if(C==="test_chapter2"){
+      if(!DEV)return pr(">> TEST COMMAND DISABLED. Append ?dev=1 to the URL to enable developer tools.","err",0);
+      if(!S.ok||S.pend==="auth")return pr(">> Authenticate first, then run test_chapter2.","err",0);
+      G.rev=1;G.clr=G.clr||Date.now();G.revealSession=G.v-1;G.signature=G.signature||`0712-${randHex(4)}-${randHex(4)}`;save();
+      await startChapter2();return;
+    }
+    // Developer-only test hook. It is not registered as a working command outside ?dev=1.
+    if(C==="test_trace100"){
+      if(!DEV)return pr(">> TEST COMMAND DISABLED. Append ?dev=1 to the URL to enable developer tools.","err",0);
+      if(!S.ok||S.pend==="auth")return pr(">> Authenticate first, then run test_trace100.","err",0);
+      if(G.jam)return pr(">> TEST: trace is already at the jammer stage.","warn",0);
+      if(G.clr)return pr(">> TEST: this run already cleared the jammer. Run reset_arg to start a clean test.","err",0);
+      G.tr=100;G.phase="test-trace100";save();tele();
+      await pr(">> DEV TEST: trace exposure forced to 100%.","warn",0);
+      await startJam();
+      return;
+    }
+    if(S.pend==="auth"&&C==="artifact"&&(A==="boot_sector"||A==="boot"||A==="service"))return printArtifact("boot_sector");
+    if(S.pend==="auth"&&C==="help")return pr("Commands available before login: artifact boot_sector. The service snapshot records the local factory PIN.","c",0);
+    if(!S.ok||S.pend==="auth")return oldExec(raw);
+    if(S.pend==="temp"||S.pend==="out"){
+      const pending=S.pend;
+      await oldExec(raw);saveShip();
+      if(!Number.isNaN(parseFloat(raw)))await react(pending==="temp"?"change_temperature":"adjust_output",[raw],raw.toLowerCase(),false,S.ov);
+      return;
+    }
+
+    if(C==="chapter2"){
+      if(!G.ch2.started)return pr(">> Chapter Two is not yet indexed. Complete the identity investigation and reconnect.","err",0);
+      return chapter2Status();
+    }
+    if(C==="compare_logs"){
+      if(!G.ch2.started)return pr(">> No Chapter Two archive session is active.","err",0);
+      if(!G.ch2.read.null_route||!G.ch2.read.voiceprint_0712)return pr(">> Comparison incomplete. Read artifact route, then artifact voiceprint.","err",0);
+      const norm=a.map(x=>x.toUpperCase().replace(/[^A-Z0-9]/g,""));
+      if(norm.join("|")!=="0712A|0712B")return pr(">> Record pair rejected. Compare the A and B records in that order; do not merge their claims.","err",0);
+      if(!G.ch2.compared){G.ch2.compared=1;G.phase="chapter2-comparison";moodDelta(1);save();}
+      await pr(">> COMPARISON ACCEPTED: 0712-A and 0712-B cannot share a single wall-clock chronology.","ok",0);
+      await pr(">> ENTRY EVENT 07:21 precedes the recorded jump at 18:25, yet the voiceprint claims both records belong to the same ship session.","warn",0);
+      await pr(">> New artifact indexed: artifact blackbox","c",0);
+      await say("ch2compare","Those records aren't merely mislabelled. The same voice exists on both sides of the event. Read the black box buffer and follow its packet-order rule. Don't sort by the ship's clock.");
+      return;
+    }
+    if(C==="reconstruct"){
+      if(!G.ch2.compared)return pr(">> Reconstruction unavailable. First read the route and voiceprint, then compare_logs 0712-A 0712-B.","err",0);
+      const times=a.map(x=>x.replace(/\D/g,""));
+      if(times.join("|")!=="0721|1825")return pr(">> Causal order rejected. Use the receipt time first, then the source time, with four digits for each. The clock labels are not the same as packet order.","err",0);
+      if(!G.ch2.reconstructed){G.ch2.reconstructed=1;G.phase="chapter2-reconstructed";moodDelta(1);save();}
+      await pr(">> CAUSAL ROUTE RECONSTRUCTED: 0712-NULL","ok",0);
+      await pr(">> NAVISYS destination resolved: LOCAL ARCHIVE LOOP / CRYSTAL SHIP 065","warn",0);
+      await pr(">> The route was never pointing outside the ship. It points to a record written before its own arrival event.","c",0);
+      await pr(">> New artifact indexed: artifact council_addendum","c",0);
+      await say("ch2route","That voiceprint is mine. I checked it against the cockpit recorder. I don't remember sending the outbound message, but I remember the hatch opening at 07:21. I remember being alone. Those memories don't fit in one order. Read the Council addendum. It may tell us who decided I should forget.");
+      return;
+    }
+    if(C==="artifact")return printArtifact(a[0]);
+    if(C==="evidence")return evidence();
+    if(C==="status")return status();
+    if(C==="comms"){
+      if(!G.log.length)return pr(">> No transmissions received.","u");
+      for(const t of G.log)await pr("PILOT> "+t,"pl",0);
+      return;
+    }
+    if(C==="trace"){
+      if(A!=="origin")return pr(">> Trace exposure: "+Math.round(G.tr)+"%"+(G.jam?" (JAMMED)":""),G.tr>70?"warn":"c");
+      if(!G.clr)return pr(">> Origin trace unavailable: no hostile carrier captured.","err");
+      if(G.rev)return pr(">> Origin already resolved: you. The individual biographies still differ.","warn");
+      if(!DEV&&G.v<=(Number(G.clearedSession)||0))return pr(">> Origin trace not ready. End this session and reconnect; P needs a clean archive comparison.","err");
+      return reveal();
+    }
+    if(C==="debug_rupture"){
+      G.verified777=1;G.phase=G.jam?"jam-diagnostic":G.phase;save();
+      await pr(">> Running Rupture Diagnostic Subroutine...","c");await sleep(300);
+      await pr(">> ERROR AT MEMORY ADDRESS 0x0712-B","err",0);
+      await pr(">> INTRUDER SIGNATURE DETECTED: VURG-0","warn",0);
+      await pr(">> DECRYPTION HASH GENERATED: 0x777-MRAK-SECURE","ok",0);
+      await pr(">> The diagnostic is a local simulation. No external system was contacted.","u",0);
+      await say("diag","VURG-0. I know that string. It was written in a report the Council later marked nonexistent. Don't assume a diagnostic is telling you who wrote it.");
+      return;
+    }
+    if(C==="verify"){
+      if(a.join("").toUpperCase()!=="777-MRAK-SECURE")return pr(">> Verification token rejected.","err");
+      G.verified777=1;save();moodDelta(1);
+      await pr(">> TOKEN ACCEPTED: 777-MRAK-SECURE","ok",0);
+      await pr(">> Council seal family: XL554 // operator record: MRAK-JM","warn",0);
+      return say("verify777","That token belongs to the old seal family. It proves the record was touched by a Council-authorised process. It does not prove MRAK-JM agreed with it.");
+    }
+    if(C==="tune"){
+      if(!G.jam)return pr(">> No carrier to tune.","err");
+      if(a.join("").replace(/\D/g,"")!=="7623")return pr(">> Carrier drift. Off frequency. Cross-reference the carrier suffix with the universe logs.","err");
+      G.j.t=1;G.phase="carrier-mapped";save();moodDelta(1);
+      await pr(">> Carrier locked at 7623. Jam layer 1 of 3 mapped.","ok");
+      await say("j2","Good. It isn't coming from a ship close by. The packet goes through five relay IDs, and they acknowledge it before the sender transmits. I left the hop order in the dead drop: artifact dead_drop. Six chairs, six steps. Try to recover the word before the numbers.");
+      return;
+    }
+    if(C==="relay"){
+      if(!G.jam||!G.j.t)return pr(">> Relay refused. Map the carrier first.","err");
+      if(a.map(x=>parseInt(x,10)).join()!=="177,54,591,934,875")return pr(">> Hop order rejected. The dead drop contains both a word and a relay chain. Check the six-step instruction; the chain may be reconstructed from the captured acknowledgements.","err");
+      G.j.r=1;G.phase="relay-mapped";save();moodDelta(1);
+      await pr(">> Relay chain accepted. Jam layer 2 of 3 mapped.","ok");
+      await say("j3","The packets are arriving before they're sent. That's not a normal relay delay. The capture is now stored as artifact intercept. One layer left: I hid a fallback in the skin of this terminal. Inspect the HTML source, find the carrier fallback, decode it, and enter decode <word>.");
+      return;
+    }
+    if(C==="decode"){
+      if(!G.jam||!G.j.r)return pr(">> Nothing to decode yet.","err");
+      if(a.join("").toLowerCase()!=="mirror")return pr(">> Passphrase rejected. Look for the carrier fallback comment in the HTML source; it is encoded, not encrypted.","err");
+      return clearJam();
+    }
+    if(G.jam&&!( ["help","clear","exit","comms","trace","tune","relay","decode","log","home","artifact","evidence","status","debug_rupture","verify"].includes(C)||(C==="open"&&A.includes("log")))){
+      return pr(">> "+raw.replace(/[a-z]/gi,ch=>Math.random()<.5?"▒░#%&"[Math.random()*5|0]:ch)+" : LINK JAMMED, packet lost","err",0);
+    }
+    const ovb=S.ov,om=/^override\s*=/i.test(raw);
+    const droneId=["destroy","scan_area","capture_data","return_home","override","engage_target"].includes(C)?String(parseInt(a[0],10)):null;
+    const preDrone=droneId!==null?S.drones[droneId]:undefined;
+    await oldExec(raw);
+    saveShip();
+    await react(C,a,A,om,ovb,preDrone);
+  };
+
+  async function react(C,a,A,om,ovb,preDrone){
+    const n=parseFloat(a[0]);
+    if(om){
+      if(S.ov&&!ovb){bump(10);moodDelta(-1);return say("ov","That seal. I haven't seen XL554 since Temoria. Whoever you are, you are not here by accident.")}
+      if(!S.ov){bump(12);moodDelta(-1);return say("bad","Someone just tried Council keys on my terminal and failed. The Council claims the old keys were destroyed. Someone is lying.")}
+      return;
+    }
+    switch(C){
+      case "destroy": {
+        const did=String(parseInt(a[0],10));
+        if(!(did in S.drones)||preDrone===undefined||preDrone==="Destroyed")return;
+        G.actions.destroy=(G.actions.destroy||0)+1;saveShip();moodDelta(-2);bump(8);
+        if(did==="177")return say("d177","DRN-177 went dark. That one watched the route behind us. I can't tell whether you made us safer or blind.");
+        return say("d","That was one of my eyes outside. The hull is a little blinder each time.");
+      }
+      case "scan_area":case "capture_data": {
+        const did=String(parseInt(a[0],10));
+        if(!(did in S.drones)||preDrone===undefined||preDrone==="Destroyed")return;
+        G.actions.scans=(G.actions.scans||0)+1;bump(4);
+        if(G.actions.scans>=3){moodDelta(-1);return say("manyScans","You've pinged the perimeter three times. The replies aren't echoing from space anymore. They're coming from the archive.")}
+        return say("s","Every drone ping is a door someone can walk through. Use them carefully.");
+      }
+      case "override":
+        if(!S.ov||preDrone!=="Online")return;
+        bump(6);moodDelta(-1);return say("droneOverride","Manual control accepted. I didn't authorise that drone override. If you found a way around the Council lock, tell me what else you can see.");
+      case "engage_target":
+        if(S.ov&&preDrone==="Override"&&a.length>=2){bump(15);moodDelta(-2);return say("e","You just fired from my ship. I did not aim that. The target's transponder was a Council archive index.")}
+        return;
+      case "cloak":
+        if(!S.ov)return;
+        if(A==="on"){moodDelta(1);return say("c1","Cloak up. Quieter. It won't make us invisible, but it makes the carrier work harder to keep a lock.")}
+        return say("c0","Cloak down. The carrier will have an easier time matching the signature now.");
+      case "dilate":
+        if(n&&n!==1){bump(3);return say("t","Time is bending around us. The log clocks are drifting, but the packet acknowledgements disagree too. Don't trust timestamps alone.")}
+        return;
+      case "thrust":
+        if(n>50){bump(5);return say("th","That thrust leaves a wake across universes. I can see it in the traffic feed even after the engines stop.")}
+        return;
+      case "shields":
+        if(n<30){bump(5);moodDelta(-1);return say("sh","Shields below thirty. Are you trying to get me killed, or are you testing what the hunter can hit?")}
+        return;
+      case "change_temperature":
+        if(n===777){bump(6);G.verified777=1;save();return say("sync777","Special sync. 777-MRAK-SECURE. That isn't a reactor password in the ordinary sense. It was embedded in an old Council verification chain.")}
+        if(n>900){bump(15);moodDelta(-2);return say("h2","Containment margin! Back it off now! Unless you're trying to make the ship visible to every listener in the branch.")}
+        if(n>700){bump(10);moodDelta(-1);return say("h1","The reactor is spiking. We cannot hide that heat signature. Lower it before the carrier locks again.")}
+        if(n>0&&n<=600){moodDelta(1);return say("cool","That is within the quiet range. You checked before pushing it. I appreciate that.")}
+        return;
+      case "adjust_output":
+        if(n>95){bump(7);return say("powerHigh","Power output that high leaves a harmonic in the Rupture channel. That's what the old diagnostic called a continuity echo.")}
+        if(n>=0&&n<=80){moodDelta(1);return say("powerLow","Lower output. Less noise on the line. Good call.")}
+        return;
+      case "plot":{
+        if(!S.ov)return;
+        const key=A.replace(/[ -]/g,"");
+        const target=LOGS.find(l=>l[0].replace(" ","").toLowerCase()===key);
+        if(target){
+          if(target[0]==="9125 A")return say("p9125","9125-A is missing from one index but present in the ship's jump history. Someone removed the destination, not the journey.");
+          if(target[0]==="0712 A"||target[0]==="0712 B")return say("p0712","I remember that universe differently from what the log says. The label changed after arrival. Check the correction when the archive reopens.");
+          return say("p","I remember that universe differently from what the log says. Someone has been editing the records after the jump.");
+        }return;
+      }
+      case "log":
+        if(+A===5)return say("l5","Log 5 is wrong. The header says 0712 A, the first line says 0712 B, and the clock runs backwards. Don't 'fix' it yet. The contradiction is evidence.");
+        if(+A===3)return say("l3","9125-A says the person doesn't exist, then immediately records their time displacement. Absence and evidence are in the same entry.");
+        return;
+    }
+  }
+
+  const oldEnter=enter;
+  enter=async function(){
+    await oldEnter();
+    if(S.ov)mods();
+    if(G.v>1){const d=Math.floor((Date.now()-prev)/DAY);await say("v"+G.v,d>=1?"You're back. "+d+" day"+(d>1?"s":"")+" since your last session. The Rupture line remembers the shape of the connection.":"Same terminal, same signature. You're back.")}
+    if(G.jam){G.phase=G.j.r?"relay-mapped":G.j.t?"carrier-mapped":"jam";document.body.classList.add("jam");link("rup",0);await pr(">> Rupture line still jammed. Type comms to reread the pilot; use evidence to check progress.","err")}
+    else if(G.clr&&!G.rev){
+      if(DEV||G.v>(Number(G.clearedSession)||0)){
+        G.postClearReady=1;G.phase="post-jam";save();
+        await say("p2","I ran the jam signature against the ship logs. I'd rather not believe the result. The archive correction and the six-seat fragment are available now. Read both, compare them with Log 5, then type: trace origin.");
+      }else await pr(">> Pilot offline. Line quiet. Archive comparison pending next session.","u");
+    }
+    if(G.rev)document.body.classList.add("rev");
+    if(G.rev&&!G.ch2.started&&G.v>Number(G.revealSession||0))await startChapter2();
+    else if(G.ch2.started&&!G.ch2.complete&&G.v>Number(G.ch2.introSession||G.v)&&!G.ch2.returnTransmission){
+      G.ch2.returnTransmission=1;save();
+      await say("ch2return","I found a second copy of the route stub in the local archive. It was stored before the first one was created. That shouldn't be possible. The terminal can show you the copy: artifact route. — P");
+    }
+    tele();saveShip();
+  };
+
+  const oldDrone=drone;
+  drone=async function(C,a){await oldDrone(C,a);saveShip()};
+
+  // Keep the rising carrier visible in the traffic feed after detection.
+  setInterval(()=>{if(G.jam&&!document.hidden){const f=$("#feed");f.insertAdjacentHTML("beforeend",`<div style="color:#ff4d5e">CARR 7623.A LOCK ${randHex(4)}</div>`);while(f.children.length>24)f.firstElementChild?.remove()}},1700);
+  setInterval(()=>{if(S.ok&&!G.jam&&!G.clr&&G.tr>0){G.tr=Math.max(0,G.tr-(S.cloak?2:1));tele();save()}},10000);
+  setInterval(()=>{if(S.ok&&S.ov&&!G.jam&&!G.clr)bump(1)},15000);
+  if(G.jam){document.body.classList.add("jam");link("rup",0)}
+})();
+</script>
+<script>
+(()=>{
+const K3="dcom_arg_ch3",DEV=/[?&]dev=1/.test(location.search);
+let C={loads:0,seen:0,started:0,a:0,b:0,sec:0,done:0,end:"",gain:50,filt:1000,ch:1,t:"0000",bc:0};
+try{C={...C,...JSON.parse(localStorage.getItem(K3)||"{}")}}catch(e){}
+C.loads++;
+const sv=()=>{try{localStorage.setItem(K3,JSON.stringify(C))}catch(e){}};sv();
+const g2=()=>{try{return JSON.parse(localStorage.getItem("dcom_arg_v1")||"{}")}catch(e){return{}}};
+const ch2=()=>!!(g2().ch2&&g2().ch2.complete),sig=()=>g2().signature||"0712-0000-0000";
+const P=t=>pr("PILOT> "+t,"pl",14),L=(t,c="c")=>pr(t,c,0);
+const cs=s=>String([...s].reduce((n,c)=>n+c.charCodeAt(0),0)%97).padStart(2,"0");
+const code=()=>{const b=`EC3-${sig()}-${C.end}`;return b+"-"+cs(b)};
+TITLES.rec="Cockpit recorder";
+VIEWS.rec=()=>`<div class="kv"><div><small>Gain</small><b class="big">${C.gain}</b>${bar(C.gain/100)}</div><div><small>Filter</small><b class="big">${C.filt} Hz</b></div></div><dl><dt>Position</dt><dd>${C.t}</dd><dt>Seal</dt><dd>${C.sec?"BROKEN":"XL554 sealed"}</dd><dt>Outbound 18:25</dt><dd>${C.done?"SENT":"empty slot"}</dd></dl><div class="chips">${[1,2,3,4,5].map(n=>`<button data-c="channel ${n}" class="${C.ch==n?"on":""}">CH${n}</button>`).join("")}</div><div class="chips">${["0000","0721","1825"].map(t=>`<button data-c="scrub ${t}">${t}</button>`).join("")}</div>`;
+const v3=()=>{if(S.view=="rec")setView("rec")};
+const btn=()=>{const m=$("#mods");if(C.started&&m&&!m.querySelector('[data-c="open cockpit recorder"]'))m.insertAdjacentHTML("beforeend",`<button class="mod" data-c="open cockpit recorder"><span>Cockpit Recorder</span><em>${C.sec?"Open":"Sealed"}</em></button>`)};
+let h3=0;const help3=()=>{if(h3++)return;HELP.push(["ask <topic>","Ask P about the story (council, mrak, hunter...)"],["broadcast <text>","Send free text to P"],["open cockpit recorder","Chapter Three recorder"],["scrub <hhmm>","Recorder: jump to a time"],["channel <1-5>","Recorder: pick a channel"],["gain <0-100>","Recorder: input gain"],["filter <hz>","Recorder: band filter"],["unseal <word>","Recorder: break the XL554 seal"],["transmit <warn|guide|silence>","Fill the 18:25 outbound slot"],["export / compare <code>","Share or compare ending codes"])};
+if(C.started)help3();
+
+async function start(){C.started=1;sv();help3();btn();
+ await L("===== CHAPTER THREE // THE SIXTH CHAIR =====","warn");
+ await P("The cockpit recorder surfaced in the archive. XL554 sealed it, but the seal is old and the tape is listening back. Try: open cockpit recorder. Scrub it, change channels, tune gain and filter. Trust what you can hear, not the log. You can also ask me things (ask council) or just talk (broadcast hello). — P");
+ await L(">> New: Cockpit Recorder, ask, broadcast. Type help.","c")}
+
+async function chk(){
+ if(C.ch!=5)return;
+ if(!C.a)return L(">> CH5: no signal. Nothing has happened on this tape yet.","u");
+ if(C.filt!=875)return L(">> CH5: noise floor. A carrier sits underneath on a relay frequency. The last relay answered first.","u");
+ if(C.gain<60)return L(">> CH5: signal present but below the noise floor. Raise gain.","u");
+ const h=S.hist.filter(x=>!/^(channel|filter|gain|scrub)\b/i.test(x)).slice(-5);
+ await L(">> CH5 LOCKED // OPERATOR INPUT, RECORDED 07:20, ONE MINUTE BEFORE THE HATCH OPENED","warn");
+ for(let i=0;i<h.length;i++)await L(`   07:20:${10+i*9}  > ${h[i].slice(0,44)}`,"u");
+ if(!h.length)await L("   (buffer blank)","u");
+ if(!C.b){C.b=1;sv();
+  await P("Those are your commands, in your order, on a tape from before you touched this ship. The five numbers on the dead drop were never relays. They are the five Council seat keys, and they acknowledged you before you sent anything. Six chairs, six steps. The sixth chair is yours. The recorder is still sealed: XL554 wrote its seals backwards, in hex, in the machine's own skin. Read the source, then unseal <word>.")}}
+
+const TOP={
+council:()=>"Six seats, six keys. They say five sit now and call the missing chair a rumour.",
+mrak:()=>C.sec?"MRAK-JM signed the seal to keep the tape from the other five. A leash on them, a lifeline for you.":"MRAK-JM signed every override on this ship. I still can't tell if it was a leash or a lifeline.",
+temoria:()=>"Where the log says the warrior was born. The Council traced the first fracture there, 1300 years back.",
+vurg:()=>"Not a person. The process that rewrites a record after a jump. It signed 0x0712-B because it was in the room.",
+hunter:()=>C.b?"It isn't hunting me. It hunts the empty seat, and you are sitting in it.":"It follows the route backwards. It arrives before the packet does.",
+sixth:()=>C.b?"One chair for whoever could hold the Rupture key without breaking the record. Nobody wrote the name down.":"Ask me when the recorder talks.",
+drones:()=>"Five eyes, one per seat key. 177 watches the route behind us. Keep them alive if you can.",
+time:()=>"Dilation doesn't slow the loop. It changes who notices.",
+recorder:()=>"It records the cockpit. It also records whoever is listening, which is the part nobody was supposed to know."};
+const E={warn:["W","If you are hearing this, do not follow my coordinates.","The loop holds. P hears your words in their own voice and turns away from the route. The five seats lose the trail and the hunter returns to the sixth chair, which still carries your name. The tape will always have said it, so you will always have said it."],
+guide:["G","a full set of coordinates, in your hand","The loop breaks. P walks your route and arrives somewhere the Council never mapped. The old recording says the opposite and the tape now holds both. A seventh variant exists in no log."],
+silence:["S","nothing","The slot fills anyway: voiceprint 99.98%, and nobody typed it. Either the loop sent it for you or another operator on another terminal did. Compare codes."]};
+
+const old=exec;
+exec=async function(v){
+ const raw=String(v||"").trim();if(!raw)return;
+ const [c,...a]=raw.split(/\s+/),k=c.toLowerCase(),A=a.join(" "),a1=A.toLowerCase();
+ if(!S.ok||S.pend)return old(v);
+ if(k=="test_chapter3"){if(!DEV)return L(">> TEST COMMAND DISABLED. Append ?dev=1 to the URL.","err");return start()}
+ if(!C.started){if(ch2()){if(!C.seen){C.seen=C.loads;sv()}if(C.loads>C.seen){await old(v);return start()}}return old(v)}
+ const n=parseFloat(a[0]);
+ if(k=="open"&&/recorder|cockpit/.test(a1)){await L(">> Cockpit Recorder: "+(C.sec?"seal broken.":"sealed by XL554. Playback only."),"ok");return setView("rec")}
+ if(k=="ask"){if(!a1||!TOP[a1])return L("> Topics: "+Object.keys(TOP).join(", "),"c");return P(TOP[a1]())}
+ if(k=="broadcast"){if(!A)return L("> Usage: broadcast <text>","err");C.bc++;sv();
+  await L(`>> Broadcast #${C.bc} sent on the Rupture line.`,"ok");await sleep(700);
+  return P(/sixth|chair|seat/i.test(A)?"Careful. Say that near the wrong carrier and the record rewrites itself.":/who are you|who is p/i.test(A)?"A pilot. Beyond that, I'm only what the tape says.":/sorry/i.test(A)?"You didn't do this alone. Keep going.":/hello|hi\b|hey/i.test(A)?"Hello. It's good to hear a voice that isn't mine.":/help/i.test(A)?"Scrub the tape. The log lies, the recording only disagrees.":"Received. Nothing else answered, which is worse than an answer.")}
+ if(k=="scrub"){const t=A.replace(/\D/g,"");if(t.length!=4||+t.slice(0,2)>23||+t.slice(2)>59)return L("> Usage: scrub <hhmm>, e.g. scrub 0721","err");C.t=t;
+  if(t=="0000")await L(">> 00:00 // Tape start. A tally scratched on the cockpit wall: six marks, five crossed out.","c");
+  else if(t=="0721"){C.a=1;await L(">> 07:21 // CH2: the hatch cycles. One set of footsteps, one person breathing, nobody waiting. CH5 is drawing power but no microphone is wired to it.","warn")}
+  else if(t=="1825")await L(">> 18:25 // CH3 outbound slot: P's voice. \"If you are hearing this, do not follow my coordinates.\" The cadence is wrong. P speaks in whole breaths. This was typed, then voiced.","warn");
+  else await L(">> "+t.slice(0,2)+":"+t.slice(2)+" // static. The tape only holds events at times the logs disagree about.","u");
+  sv();return v3()}
+ if(k=="channel"){if(!(n>=1&&n<=5))return L("> Usage: channel <1-5>","err");C.ch=n;sv();
+  await L([">> CH1: cockpit ambient. Wind that shouldn't exist in a sealed hull.",">> CH2: hatch and airlock. Hinges, then silence.",">> CH3: comms. The outbound slot at 18:25 is on this channel.",`>> CH4: reactor hum, tuned to ${S.temp}°C. The tape knows what you set.`,">> CH5: unlabeled."][n-1],"ok");v3();return chk()}
+ if(k=="gain"){if(!(n>=0&&n<=100))return L("> Usage: gain <0-100>","err");C.gain=n;sv();await L(">> Gain set to "+n+(n>95?". Clipping.":"."),n>95?"warn":"ok");v3();return chk()}
+ if(k=="filter"){if(!(n>=20&&n<=20000))return L("> Usage: filter <20-20000> (Hz)","err");C.filt=n;sv();await L(`>> Band filter centred at ${n} Hz.`,"ok");v3();return chk()}
+ if(k=="unseal"){if(!C.b)return L(">> Nothing to unseal. Hear CH5 first.","err");if(C.sec)return L(">> Seal already broken.","warn");
+  if(a1!="echo")return L(">> Seal rejected. It is written backwards, in hex, in the terminal's own skin. View source.","err");
+  C.sec=1;sv();btn();v3();
+  await L(">> XL554 SEAL BROKEN. COUNCIL ADDENDUM 0712-SIX RELEASED.","warn");
+  await L("The Mirakilin Council was founded with six chairs. Five were filled. The sixth was reserved for the one who could hold the Rupture key without breaking the record. When the subject proved to be that person, five seats voted to seal the chair empty. VURG-0 was given five keys and one order: close the loop before the sixth chair is taken.","");
+  await L("MRAK-JM: I could not stop the vote. I sealed the recorder so the one place that remembers the sixth chair would also remember who sat in it.","u");
+  return P("The 18:25 outbound slot is empty and waiting for a sender. The only operator on this line is you. I won't write it for you: transmit warn, transmit guide, or transmit silence. Whatever you choose, the tape will always have said it. — P")}
+ if(k=="transmit"){if(!C.sec)return L(">> Outbound slot sealed.","err");if(C.done)return L(">> The loop has closed. Type export to share your code.","warn");
+  const e=E[a1];if(!e)return L("> Usage: transmit <warn|guide|silence>","err");
+  C.done=1;C.end=e[0];sv();v3();await L(">> Writing to outbound slot 18:25: "+e[1],"warn");await sleep(900);await L(">> LOOP CLOSED.","ok");
+  await P(e[2]);await L(">> CHAPTER THREE COMPLETE: THE SIXTH CHAIR // ending code: "+code(),"warn");
+  return L(">> Share it. compare <code> shows how another operator's loop closed.","c")}
+ if(k=="export")return C.done?L(">> "+code(),"ok"):L(">> No ending to export yet.","err");
+ if(k=="compare"){if(!C.done)return L(">> Close your own loop first.","err");
+  const m=A.trim().match(/^(EC3-(0712-[0-9A-F]{4}-[0-9A-F]{4})-([WGS]))-(\d\d)$/i);
+  if(!m||cs(m[1].toUpperCase())!=m[4])return L(">> Code rejected. Format: EC3-0712-XXXX-XXXX-<W|G|S>-nn","err");
+  if(m[2].toUpperCase()==sig())return L(">> That is your own loop.","warn");
+  const s=m[3].toUpperCase()==C.end;await L(`>> Foreign loop ${m[2].toUpperCase()}: ${s?"same ending as yours.":"a different ending."}`,"ok");
+  return P(s?"Two operators, one sentence. The loop isn't yours alone. How many others are there?":"Another sixth chair closed differently. The tape has more than one ending, and all of them are true somewhere.")}
+ await old(v);btn()};
+})();
+</script>
+<!-- orrery: the sixth star is the mean of the other five. latitude first, one decimal. -->
+<script>
+(()=>{
+const K4="dcom_arg_ch4",DEV=/[?&]dev=1/.test(location.search);
+let H={loads:0,seen:0,started:0,loc:0,done:0,tries:0,hint:0,fails:0};
+try{H={...H,...JSON.parse(localStorage.getItem(K4)||"{}")}}catch(e){}
+H.loads++;
+const sv=()=>{try{localStorage.setItem(K4,JSON.stringify(H))}catch(e){}};sv();
+const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||"{}")}catch(e){return{}}};
+const c3=()=>rd("dcom_arg_ch3"),sig=()=>rd("dcom_arg_v1").signature||"0712-0000-0000";
+const P=t=>pr("PILOT> "+t,"pl",14),L=(t,c="c")=>pr(t,c,0);
+const cs=s=>String([...s].reduce((n,c)=>n+c.charCodeAt(0),0)%97).padStart(2,"0");
+const ST=[[177,"4378 C",16.642577,65.531059],[54,"7623 A",37.947859,-53.450664],[591,"9125 A",86.294906,176.604630],[934,"0712 B",54.696540,-26.806521],[875,"0712 A",-1.028745,76.277908]];
+const MID=[ST.reduce((s,x)=>s+x[2],0)/5,ST.reduce((s,x)=>s+x[3],0)/5];
+const PL=[["Temoria-II","orbit 1300 y. A warrior's grave on the night side."],["Mirror","tidally locked. It reflects the other five stars and none of its own."],["Echo","retrograde. Its year ends before it begins."]];
+const px=(la,lo)=>[(lo+180)*2,(90-la)*2];
+const st=document.createElement("style");st.textContent=".sm{width:100%;max-height:230px;border:1px solid var(--line);background:#050b12}.sm line{stroke:var(--line)}.sm .h{stroke:var(--ice);stroke-dasharray:4 3;fill:none}.sm .s{fill:var(--ice)}.sm .m{fill:var(--mint)}.sm .o{fill:none;stroke:var(--mint);opacity:.5}.sm text{fill:var(--tx);font-size:10px}";document.head.append(st);
+TITLES.map="Star / planet map";
+VIEWS.map=()=>{let g="";for(let i=0;i<=12;i++)g+=`<line x1="${i*60}" y1="0" x2="${i*60}" y2="360"/>`;for(let i=0;i<=6;i++)g+=`<line x1="0" y1="${i*60}" x2="720" y2="${i*60}"/>`;
+ const p=ST.map(s=>px(s[2],s[3]));
+ let m=`<polyline class="h" points="${p.map(q=>q.join(",")).join(" ")}"/>`+ST.map((s,i)=>`<circle class="s" cx="${p[i][0]}" cy="${p[i][1]}" r="4"/><text x="${p[i][0]+7}" y="${p[i][1]-5}">${String(s[0]).padStart(3,"0")} · ${s[1]}</text>`).join("");
+ if(H.loc){const [x,y]=px(...MID);m+=`<circle class="m" cx="${x}" cy="${y}" r="6"/><text x="${x+10}" y="${y-30}" style="fill:var(--mint)">SEAT 6 · SIGIL</text>`+PL.map((q,i)=>{const r=14+i*9,a=i*2.1+.6;return `<circle class="o" cx="${x}" cy="${y}" r="${r}"/><circle class="m" cx="${x+r*Math.cos(a)}" cy="${y+r*Math.sin(a)}" r="2.5"/>`}).join("")}
+ return `<svg class="sm" viewBox="0 0 720 360" role="img" aria-label="Star map of five seat stars">${g}${m}</svg><div class="chips" style="margin-top:8px">${ST.map(s=>`<button data-c="star ${s[0]}">${String(s[0]).padStart(3,"0")}</button>`).join("")}</div><p>Six chairs, five stars. SEAT 6: <b class="${H.loc?"":"warn"}">${H.loc?"SEATED":"EMPTY"}</b>. The sixth chair sits where the other five balance. Use <code>locate &lt;lat&gt; &lt;lon&gt;</code>.</p>${H.loc?"<dl>"+PL.map(q=>`<dt>${q[0]}</dt><dd>${q[1]}</dd>`).join("")+"</dl>":""}`};
+const btn=()=>{const m=$("#mods");if(H.started&&m&&!m.querySelector('[data-c="open star map"]'))m.insertAdjacentHTML("beforeend",`<button class="mod" data-c="open star map"><span>Star / Planet Map</span><em>${H.loc?"Seated":"Open"}</em></button>`)};
+const Q=["THE TRIBUNAL ASKS FOR A FULL ACCOUNT. One answer, in your own words, covering all five parts:",
+" 1. Who really sent the 18:25 outbound message, and what in its delivery proved it was not spoken by P?",
+" 2. Why did the five seat keys acknowledge a packet before it was sent?",
+" 3. What was the sixth chair reserved for, and how did you find where it sits?",
+" 4. What was VURG-0 ordered to do, and what did your transmit choice change about the loop?",
+" 5. Why can neither the wall clock nor the source timestamps be used to order the 0712 records, and what can?",
+"Submit with: answer <your full account>. Minimum 300 characters. The Tribunal judges meaning, not wording."];
+const R=[
+ t=>/\byou\b|operator|sixth chair|myself|\bi sent/.test(t)&&/typed|written|wrote|cadence|breath|forged|scripted|text/.test(t),
+ t=>/(five|5|seat|council|drone).{0,40}(key|keys|relay)|keys?.{0,40}seat/.test(t)&&/before|earlier|prior|preced|ahead|already/.test(t),
+ t=>/centroid|centre|center|balanc|mean|average|middle/.test(t)&&/rupture|hold|key|without breaking|record|latitude|coordinate|map/.test(t),
+ t=>/vurg/.test(t)&&/clos|seal|rewrit|eras|loop/.test(t)&&/warn|guid|silen|transmit|chose|choice|loop/.test(t),
+ t=>/receipt|received|packet|arriv/.test(t)&&/wall|clock|timestamp|source|dilat|circular/.test(t)];
+const EP={W:"You warned yourself. The Tribunal now holds a voice it cannot rewrite.",G:"You handed over a route. The Tribunal logs a seventh variant and cannot find it.",S:"You said nothing. The Tribunal enters the silence as testimony."};
+const code4=()=>{const b=`EC4-${sig()}-${c3().end||"S"}`;return b+"-"+cs(b)};
+const HELP4=[["open star map","Chapter Four star / planet map"],["star <seat>","Inspect a seat star (177 054 591 934 875)"],["locate <lat> <lon>","Seat the sixth star"],["tribunal","Read the Tribunal's question"],["answer <text>","Submit a long-form account"],["hint orrery","Progressive hints"],["export4","Share your Chapter Four code"]];
+let h4=0;const help4=()=>{if(h4++)return;HELP.push(...HELP4)};
+if(H.started)help4();
+async function start(){H.started=1;sv();help4();btn();
+ await L("===== CHAPTER FOUR // THE ORRERY OF SIX =====","warn");
+ await P("The loop closed, and the archive drew a map I never saw it draw. Five stars, joined in the dead drop's order. Six chairs. The sixth has no star yet. Open the star map. Something has to sit where the other five balance. — P");
+ await L(">> New: Star / Planet Map, Tribunal. Type help.","c")}
+const old=exec;
+exec=async function(v){
+ const raw=String(v||"").trim();if(!raw)return;
+ const [c,...a]=raw.split(/\s+/),k=c.toLowerCase(),A=a.join(" "),a1=A.toLowerCase();
+ if(!S.ok||S.pend)return old(v);
+ if(k=="test_chapter4"){if(!DEV)return L(">> TEST COMMAND DISABLED. Append ?dev=1 to the URL.","err");return start()}
+ if(!H.started){if(c3().done){if(!H.seen){H.seen=H.loads;sv()}if(H.loads>H.seen){await old(v);return start()}}return old(v)}
+ if(k=="open"&&/star|map|orrery/.test(a1)){await L(">> Star / Planet Map online. Five seats plotted from the universe logs.","ok");return setView("map")}
+ if(k=="star"){const s=ST.find(x=>x[0]==parseInt(a[0],10));if(!s)return L("> Usage: star <177|054|591|934|875>","err");
+  return L(`>> SEAT KEY ${String(s[0]).padStart(3,"0")} // Universe ${s[1]} // lat ${s[2]} lon ${s[3]}. Acknowledged before it was sent.`,"ok")}
+ if(k=="locate"){const n=A.replace(/,/g," ").split(/\s+/).map(parseFloat);if(n.length<2||n.some(isNaN))return L("> Usage: locate <lat> <lon>, e.g. locate 10.0 20.0","err");
+  if(H.loc)return L(">> Seat 6 is already seated.","warn");
+  if(Math.abs(n[0]-MID[0])>.6||Math.abs(n[1]-MID[1])>.6){H.fails++;sv();await L(">> Nothing answers at that position. The chair stays empty.","err");
+   if(H.fails==3)await P("Five weights on a map. Where would they balance? Try the average of the five coordinates.");return}
+  H.loc=1;sv();await L(">> POSITION ACCEPTED. A star ignites: SIGIL, SEAT 6.","warn");await sleep(500);
+  for(const q of PL)await L(`   planet ${q[0]}: ${q[1]}`,"ok");
+  await P("It was at the centre the whole time. The one chair that could hold the key without breaking the record sat where the other five balance. The Tribunal will sit now. Type tribunal.");
+  if(S.view=="map")setView("map");btn();return}
+ if(k=="tribunal"){if(!H.loc)return L(">> The Tribunal does not sit while the sixth chair is empty.","err");
+  if(H.done)return L(">> Tribunal adjourned. export4 shows your code.","warn");for(const q of Q)await L(q,"c");return}
+ if(k=="answer"){if(!H.loc)return L(">> No Tribunal is sitting.","err");if(H.done)return L(">> Tribunal adjourned. export4 shows your code.","warn");
+  if(A.length<300)return L(`>> Account too short (${A.length}/300). The Tribunal wants the whole chain, not a verdict.`,"err");
+  const t=A.toLowerCase(),f=R.map(r=>r(t)),n=f.filter(Boolean).length;H.tries++;sv();
+  if(n<4){for(let i=0;i<5;i++)if(!f[i])await L(`>> Part ${i+1}: insufficient. The Tribunal cannot follow the reasoning.`,"warn");
+   return L(`>> ${n}/5 parts upheld. At least 4 are required. Re-read the artifacts, then answer again.`,"err")}
+  H.done=1;H.end=c3().end||"S";sv();await L(`>> ${n}/5 PARTS UPHELD. THE ACCOUNT IS ENTERED INTO THE RECORD.`,"ok");
+  await L(">> "+EP[H.end],"warn");await P("It is in the record, in your words. The loop doesn't need a sixth chair to be empty anymore. It needs someone to remember it. — P");
+  return L(">> CHAPTER FOUR COMPLETE: THE ORRERY OF SIX // code: "+code4()+". Next lead: Temoria-II answers on no known frequency.","warn")}
+ if(k=="hint"&&a1=="orrery"){const h=["Five stars are plotted from the five universe logs. Six chairs. One star is missing.","The sixth sits where the others balance: the centre of the five.","Average the five latitudes, then the five longitudes. Then: locate <lat> <lon>, one decimal."];
+  const i=H.hint;H.hint=Math.min(2,i+1);sv();return L(">> HINT "+(i+1)+"/3: "+h[i],"c")}
+ if(k=="export4")return H.done?L(">> "+code4(),"ok"):L(">> No ending to export yet.","err");
+ await old(v);btn()};
+})();
+</script>
+<style>.l.hp{white-space:normal}.hg{color:var(--mag);font:700 11px "Chakra Petch",sans-serif;letter-spacing:.14em;margin:12px 0 4px;padding-bottom:2px;border-bottom:1px solid var(--line)}.hr{display:grid;grid-template-columns:minmax(10em,42%) minmax(0,1fr);gap:0 14px;padding:2px 0}.hr code{color:var(--amb)}.hr i{color:var(--dim);font-style:normal}.hr span{color:var(--tx)}.hf{color:var(--dim);margin-top:10px}</style>
+<!-- chapter four, part two: drones vs VURG-0, council audience, readable help -->
+<script>
+(()=>{
+const KB="dcom_arg_ch4b",DEV=/[?&]dev=1/.test(location.search);
+let B={started:0,wave:0,hp:5,integ:100,fails:0,vd:0,aud:0,cd:0,won:{},hv:0,hc:0};
+try{B={...B,...JSON.parse(localStorage.getItem(KB)||"{}")}}catch(e){}
+const sv=()=>{try{localStorage.setItem(KB,JSON.stringify(B))}catch(e){}};
+const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||"{}")}catch(e){return{}}};
+const P=t=>pr("PILOT> "+t,"pl",14),L=(t,c="c")=>pr(t,c,0),V=t=>pr("VURG-0> "+t,"err",10);
+const sig=()=>rd("dcom_arg_v1").signature||"0712-0000-0000",R4=()=>rd("dcom_arg_ch4");
+const KEYS=[177,54,591,934,875];
+const TELL=["\u2018\u2026a Warrior, born and raised in Temoria\u2019","\u2018\u2026an underworld hacker specializing in taking down Cybercriminals\u2019","\u2018\u2026has traveled through time\u2019","\u2018Rupture protocols exist in this universe\u2019","\u2018\u2026has found and boarded the Ship on Manual Control\u2019"];
+const ord=()=>{let s=[...sig()].reduce((n,c)=>(n*31+c.charCodeAt(0))>>>0,7),a=[0,1,2,3,4];for(let i=4;i>0;i--){s=(s*1103515245+12345)>>>0;const j=s%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const pad=k=>String(k).padStart(3,"0");
+TITLES.vurg="VURG-0 assault";
+VIEWS.vurg=()=>`<div class="kv"><div><small>VURG-0 cohesion</small><b class="big hot">${B.hp*20}%</b>${bar(B.hp/5)}</div><div><small>Record integrity</small><b class="big">${B.integ}%</b>${bar(B.integ/100)}</div></div><p>${B.vd?"VURG-0 suspended.":`Wave ${B.wave+1}/5 \u00b7 rewriting: <code>${TELL[ord()[B.wave]]}</code>`}</p><div class="dg">${KEYS.map(k=>`<div class="dc ${S.drones[k]=="Destroyed"?"x":""}"><b>DRN-${pad(k)}</b><em>${S.drones[k]}</em><div><button data-c="override ${k}">override</button><button data-c="engage_target ${k} VURG-0">strike</button></div></div>`).join("")}</div><div class="chips" style="margin-top:10px"><button data-c="override all">override all</button><button data-c="hint vurg">hint</button></div>`;
+const SE=[
+["177","warrior","SEAT 177 \u00b7 WARRIOR OF TEMORIA",/own|accept|stand|face|responsib|stay|fight|honou?r|earn|brave|courage/,"I buried my own grave once. I will not seat a chair that flinches. Will you stand in it, or hide behind a loop?","Then you stand. My sword stays out of your chair."],
+["54","hacker","SEAT 054 \u00b7 THE HACKER",/evidence|tape|record|proof|cadence|ch5|signature|jam|typed|verif/,"Everything you say is a string. Show me something I can verify, not something you feel.","That checks against my relay logs. Fine. I withdraw my objection."],
+["591","displaced","SEAT 591 \u00b7 THE DISPLACED",/remember|witness|memory|forget|erase|loop|again|alone/,"I have lived on both sides of this clock. Tell me what the record keeps when you are gone.","Then it is remembered, and that is the only mercy time has. I yield."],
+["934","keeper","SEAT 934 \u00b7 KEEPER OF RUPTURE (MRAK-JM)",/leash|lifeline|contain|save|both|protect|cage|free|choice|choose/,"I sealed the recorder. A leash or a lifeline, I could never say. Which was it, in your eyes?","Both, and I will live with it. Seat six is yours. I countersign."],
+["875","captain","SEAT 875 \u00b7 THE CAPTAIN",/fleet|ships?|weapon|power|protect|return|never|won.?t|nobody|hurt|peace/,"A stranger gave me a fleet once. What does the sixth chair do with that kind of power?","Then keep it unused. A fleet nobody fires is the only kind I trust."]];
+const seat=t=>{t=t.toLowerCase();return SE.find(s=>t==s[1]||(/^\d+$/.test(t)&&+t==+s[0])||(s[1]=="keeper"&&/^mrak/.test(t)))};
+const btn=()=>{};
+let hp_=0;const HP=()=>{if(hp_++)return;HELP.push(["assault","Show the VURG-0 assault"],["override all","Assault: take manual control of all drones"],["engage_target <drone> VURG-0","Assault: strike with one drone"],["hint vurg","Assault: progressive hints"],["council","Convene the Council (after VURG-0)"],["address <seat> <text>","Speak to one seat: warrior, hacker, displaced, keeper, captain"],["speak <text>","Speak to the whole chamber"],["hint council","Council: progressive hints"])};
+if(B.started)HP();
+async function wave(){const i=ord()[B.wave];await V("Rewriting: "+TELL[i]);await L(">> Strike with the drone that holds this record: engage_target <drone> VURG-0","warn");if(S.view=="vurg")setView("vurg")}
+async function start(){B.started=1;B.wave=0;B.hp=5;B.integ=100;sv();HP();
+ for(const k in S.drones)if(S.drones[k]=="Destroyed"||S.drones[k]=="Returning")S.drones[k]="Online";
+ await L(">> ALERT: SIGIL ignition detected. Hostile process entering the sixth chair.","err");
+ await V("Seat six is open. My order was to close the loop before it was taken. It has been taken.");
+ await P("VURG-0 is aboard. It rewrites a record and everything that leans on it. The five drones carry the five seat keys, so each one keeps one universe's record intact. Run override all, then engage_target <drone> VURG-0 with the drone whose universe it is rewriting. The logs and the star map tell you whose is whose.");
+ setView("vurg");await wave()}
+async function strike(n,a){const id=pad(n),exp=KEYS[ord()[B.wave]];
+ if(n==exp){B.hp--;B.wave++;sv();await L(`>> DRN-${id}: lock achieved. Its record holds. VURG-0 loses cohesion.`,"ok");
+  if(B.hp<=0)return fin();await V(["No. It was true.","Another witness. Another seat.","Stop reading me back to myself.","I was built to forget this."][B.wave-1]);return wave()}
+ B.integ-=25;B.fails++;sv();
+ if(B.integ<=0){await L(">> RECORD REWRITTEN. Rolling back to the last stable snapshot.","err");B.integ=100;B.wave=0;B.hp=5;sv();await V("Again.");return wave()}
+ await L(`>> DRN-${id}: wrong record. VURG-0 rewrites it. Record integrity ${B.integ}%.`,"err");
+ if(B.fails==2)await P("Read the line it is rewriting, find it in the logs, then match that universe to its seat key with star <seat>.")}
+async function fin(){B.vd=1;sv();await L(">> VURG-0 COHESION 0%. PROCESS SUSPENDED, NOT DELETED.","ok");
+ await V("The keys are loose. You were never my order. The Council has been listening through me the whole time.");
+ await P("It is suspended, not dead, and the five seats are on the line now. They want to hear you directly. Type council. \u2014 P");if(S.view=="vurg")setView("vurg")}
+async function talk(s,t){if(B.won[s[0]])return pr(`${s[2]}> I have spoken. The vote stands.`,"c",8);
+ if(t.length<25||!s[3].test(t.toLowerCase()))return pr(`${s[2]}> ${t.length<25?"Speak plainly, and at length.":"That does not answer me."} ${s[4]}`,"warn",8);
+ B.won[s[0]]=1;sv();await pr(`${s[2]}> ${s[5]}`,"ok",8);await tally()}
+async function tally(){const n=Object.keys(B.won).length;await L(`>> Council standing: ${n}/5 seats in favour (4 carry the vote).`,"c");
+ if(n>=4&&!B.cd){B.cd=1;sv();await L(">> VOTE CALLED. SEAT SIX IS SEATED BY THE COUNCIL.","warn");await P("They voted. The sixth chair is yours. The Tribunal sits now and wants your full account. Type tribunal. \u2014 P")}}
+async function council(){if(!B.vd)return L(">> The chamber is sealed while VURG-0 holds it. Type assault.","err");
+ if(!B.aud){B.aud=1;sv();await L("===== THE MIRAKILIN COUNCIL IS IN SESSION =====","warn");for(const s of SE)await pr(`${s[2]}> ${s[4]}`,"c",6);
+  await L("> Seats: warrior, hacker, displaced, keeper, captain. Use: address <seat> <text>, or speak <text> to the room.","c");
+  return P("Each seat asked you something. Answer in your own words. Four of five carry the vote.")}
+ await L("COUNCIL STANDING"+(B.cd?" \u00b7 SEAT SIX SEATED":""),"warn");for(const s of SE)await L(`  ${s[2].padEnd(42)} ${B.won[s[0]]?"IN FAVOUR":"undecided"}`,B.won[s[0]]?"ok":"u")}
+const GR=[["CHAPTER 4 \u00b7 ORRERY, ASSAULT & COUNCIL",/^(open star|star|locate|tribunal|answer|hint|export4|assault|council|address|speak|engage_target <drone> VURG|override all)/],["CHAPTER 3 \u00b7 COCKPIT RECORDER",/^(open cockpit|scrub|channel|gain|filter|unseal|transmit|export \/|compare )/],["INVESTIGATION & PILOT",/^(artifact|evidence|status|comms|trace|debug|ask|broadcast|chapter2|compare_logs|reconstruct)/],["SHIP, SYSTEMS & DRONES",/^(open|home|log|scan_area|capture_data|override|engage_target|destroy|return_home|change_temperature|adjust_output|shields|cloak|plot|dilate)/],["CONSOLE",/^(clear|exit)/]];
+function help(q){const seen=new Set(),G=GR.map(g=>[g[0],g[1],[]]),O=["OTHER",0,[]];
+ for(const r of HELP){if(seen.has(r[0]))continue;seen.add(r[0]);if(q&&!(r[0]+" "+r[1]).toLowerCase().includes(q))continue;(G.find(g=>g[1].test(r[0]))||O)[2].push(r)}
+ const e=document.createElement("div");e.className="l hp";
+ e.innerHTML=[...G,O].filter(g=>g[2].length).map(g=>`<div class="hg">${g[0]}</div>`+g[2].map(r=>{const i=r[0].search(/[<=]/),c=i<0?r[0]:r[0].slice(0,i),x=i<0?"":r[0].slice(i);return `<div class="hr"><div><code>${esc(c.trim())}</code> <i>${esc(x)}</i></div><span>${esc(r[1])}</span></div>`}).join("")).join("")||`<div class="hf">No commands match "${esc(q)}".</div>`;
+ e.insertAdjacentHTML("beforeend",`<div class="hf">Type help &lt;word&gt; to filter, e.g. help drone. Arrow-up recalls earlier commands.</div>`);
+ term.append(e);e.scrollIntoView({block:"start"})}
+const old=exec;
+exec=async function(v){
+ const raw=String(v||"").trim();if(!raw)return;
+ const [c,...a]=raw.split(/\s+/),k=c.toLowerCase(),A=a.join(" "),a1=A.toLowerCase();
+ if(!S.ok||S.pend)return old(v);
+ if(k=="help")return help(a1);
+ if(k=="test_vurg"){if(!DEV)return L(">> TEST COMMAND DISABLED. Append ?dev=1 to the URL.","err");return start()}
+ const r=R4();
+ if(B.started&&!B.vd){
+  if(k=="assault"){setView("vurg");return wave()}
+  if(k=="override"&&a1=="all"){for(const d in S.drones)if(S.drones[d]!="Destroyed")S.drones[d]="Override";await L(">> All drones: manual control engaged. Council signature accepted.","ok");if(S.view=="vurg")setView("vurg");return}
+  if(k=="engage_target"&&a[0]){const n=parseInt(a[0],10);
+   if(KEYS.includes(n)&&S.drones[n]=="Override"){if(!/^vurg-?0?$/.test(a.slice(1).join("").toLowerCase()))return L(">> Only hostile in range: VURG-0.","err");await strike(n,a);if(S.view=="vurg")setView("vurg");return}}
+  if(k=="hint"&&a1=="vurg"){const h=["VURG-0 quotes one line from a universe log. Find the line with log 1 to log 5.","Match that universe to its seat key: star 177, 054, 591, 934, 875. The dead drop lists the keys in log order.","Override that one drone, then engage_target <drone> VURG-0. Wrong drones cost record integrity."];const i=B.hv;B.hv=Math.min(2,i+1);sv();return L(">> HINT "+(i+1)+"/3: "+h[i],"c")}
+ }
+ if(k=="assault")return B.vd?L(">> VURG-0 is suspended. Type council.","ok"):r.loc?start():L(">> No hostile process. Seat the sixth star first.","err");
+ if(k=="council")return council();
+ if(k=="address"||k=="speak"){if(!B.aud)return L(">> The Council is not in session. Type council.","err");
+  if(k=="address"){const s=seat(a[0]||"");if(!s)return L("> Usage: address <warrior|hacker|displaced|keeper|captain> <text>","err");return talk(s,a.slice(1).join(" "))}
+  if(!A)return L("> Usage: speak <text>","err");const m=SE.filter(s=>!B.won[s[0]]&&A.length>=25&&s[3].test(a1));
+  if(!m.length)return L(">> The chamber is silent. Address a seat directly: address <seat> <text>","warn");for(const s of m)await talk(s,A);return}
+ if(k=="hint"&&a1=="council"){const h=["Each seat asked one question. Read them again with council.","Warrior: facing it. Hacker: evidence. Displaced: memory. Keeper: leash or lifeline. Captain: what you do with power.","Write a sentence or two per seat. Keywords matter less than meaning, but be specific."];const i=B.hc;B.hc=Math.min(2,i+1);sv();return L(">> HINT "+(i+1)+"/3: "+h[i],"c")}
+ if((k=="tribunal"||k=="answer")&&r.loc&&!r.done&&!B.cd)return L(B.vd?">> The Tribunal waits on the Council vote. Type council.":">> The Tribunal does not sit while VURG-0 holds the chamber. Type assault.","err");
+ await old(v);
+ const r2=R4();if(r2.loc&&!r2.done&&!B.started)await start();
+ if(S.view=="vurg")setView("vurg")};
+})();
+</script>
+</body>
+</html>
